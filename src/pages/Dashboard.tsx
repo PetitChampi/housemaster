@@ -1,4 +1,4 @@
-// import houseImage from '../assets/dummy-house.png'; // Make sure to have an image here
+// import houseImage from '@/assets/dummy-house.png'; // Make sure to have an image here
 
 const Dashboard = () => {
   const style = {

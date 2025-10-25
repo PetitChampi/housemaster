@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react';
-import { AppContext } from './AppContext';
+import { useState, type ReactNode } from "react";
+import { AppContext } from "@/context/AppContext";
 
 interface AppProviderProps {
   children: ReactNode;

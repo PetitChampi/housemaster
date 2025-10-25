@@ -1,6 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
-import './Menu.css';
+import { NavLink, useNavigate } from "react-router-dom";
+import { useApp } from "@/context/AppContext";
 
 const Menu = () => {
   const { isMenuOpen, closeMenu, user } = useApp();

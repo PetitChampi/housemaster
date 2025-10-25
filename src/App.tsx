@@ -1,18 +1,17 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Menu from './components/Menu';
-import Auth from './pages/Auth';
-import Dashboard from './pages/Dashboard';
-import QuoteOfTheDay from './pages/Bathroom/QuoteOfTheDay';
-import SnoozeBuddy from './pages/Bedroom/SnoozeBuddy';
-import CraftLog from './pages/HobbyRoom/CraftLog';
-import TravelLog from './pages/HobbyRoom/TravelLog';
-import GroceryManager from './pages/Kitchen/GroceryManager';
-import Calendar from './pages/LivingRoom/Calendar';
-import TaskHub from './pages/LivingRoom/TaskHub';
-import AccountingLinks from './pages/Study/AccountingLinks';
-import TaskBoard from './pages/Study/TaskBoard';
+import { Routes, Route } from "react-router-dom";
+import Header from "@/components/Header";
+import Menu from "@/components/Menu";
+import Auth from "@/pages/Auth";
+import Dashboard from "@/pages/Dashboard";
+import QuoteOfTheDay from "@/pages/Bathroom/QuoteOfTheDay";
+import SnoozeBuddy from "@/pages/Bedroom/SnoozeBuddy";
+import CraftLog from "@/pages/HobbyRoom/CraftLog";
+import TravelLog from "@/pages/HobbyRoom/TravelLog";
+import GroceryManager from "@/pages/Kitchen/GroceryManager";
+import Calendar from "@/pages/LivingRoom/Calendar";
+import TaskHub from "@/pages/LivingRoom/TaskHub";
+import AccountingLinks from "@/pages/Study/AccountingLinks";
+import TaskBoard from "@/pages/Study/TaskBoard";
 
 function App() {
   return (

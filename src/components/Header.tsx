@@ -1,5 +1,4 @@
-import { useApp } from '../context/AppContext';
-import './Header.css';
+import { useApp } from "@/context/AppContext";
 
 const Header = () => {
   const { toggleMenu } = useApp();
