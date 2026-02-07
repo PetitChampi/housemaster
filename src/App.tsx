@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Header from "@/components/Header";
 import Menu from "@/components/Menu";
 import Auth from "@/pages/Auth";
 import Dashboard from "@/pages/Dashboard";
@@ -16,7 +15,6 @@ import TaskBoard from "@/pages/Study/TaskBoard";
 function App() {
   return (
     <>
-      <Header />
       <Menu />
       <main>
         <Routes>

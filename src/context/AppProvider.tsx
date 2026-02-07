@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { AppContext } from "@/context/AppContext";
+import { AppContextType, User} from "@/context/AppContext";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -7,12 +8,12 @@ interface AppProviderProps {
 
 const AppProvider = ({ children }: AppProviderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = { name: 'Reginald', role: 'GUEST', avatar: '🐧' };
+  const user: User = { name: "Reginald", role: "GUEST", avatarUrl: "/img/reginald-penguin.jpg" };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const value = {
+  const value: AppContextType = {
     isMenuOpen,
     toggleMenu,
     closeMenu,
