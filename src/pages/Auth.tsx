@@ -1,34 +1,33 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { IconKey } from "@tabler/icons-react";
+import "@/styles/AuthView.css";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const authContainerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    background: '#333'
-  }
-  const authPanelStyle = {
-    padding: '40px',
-    background: 'rgba(0,0,0,0.5)',
-    borderRadius: '16px',
-    textAlign: 'center'
-  }
-  const buttonStyle = {
-    display: 'block',
-    width: '200px',
-    padding: '10px',
-    margin: '10px 0',
-    cursor: 'pointer'
-  }
   
   return (
-    <div style={authContainerStyle}>
-      <div style={authPanelStyle}>
-        <h2>Welcome</h2>
-        <button style={buttonStyle} onClick={() => navigate('/')}>Continue as Guest</button>
-        <button style={buttonStyle} onClick={() => alert('Login not implemented yet!')}>Login</button>
+    <div className="auth-container">
+      <div className="auth-panel">
+        <div className="household-picture">
+          <img src="img/household-default.jpg" alt="Household profile picture" />
+        </div>
+        <h2 className="household-name">The Haddons</h2>
+
+        <div className="login-form">
+          <div className="input-container">
+            <label htmlFor="username">Your name</label>
+            <input type="text" id="username" name="username" />
+          </div>
+          <div className="input-container">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" />
+          </div>
+
+          <div className="actions">
+            <button className="btn crimson primary" onClick={() => alert("Login not implemented yet!")}><IconKey size={24} stroke={2} />Enter house</button>
+            <p className="bottom-note">Not a member of this household?<a className="text-link" onClick={() => navigate("/")}>Enter&nbsp;as&nbsp;guest</a></p>
+          </div>
+        </div>
       </div>
     </div>
   )

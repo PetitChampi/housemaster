@@ -1,0 +1,65 @@
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  /* to be replaced with spinning house model */
+  background-image: url("https://picsum.photos/id/378/2000/1000");
+  background-position: center;
+  background-size: cover;
+  .auth-panel {
+    position: relative;
+    width: 420px;
+    max-width: 100%;
+    background-color: rgba(255, 255, 255, .7);
+    border: 1px solid white;
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-xl);
+    padding: 50px 30px 30px 30px;
+    .household-picture {
+      --picture-size: 100px;
+      position: absolute;
+      top: calc(var(--picture-size) / -2 - 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: var(--picture-size);
+      height: var(--picture-size);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      background-color: var(--color-gray-cold-5);
+      border: 2px solid white;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .household-name {
+      margin: 0 auto 25px;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      .actions {
+        margin-top: 25px;
+        text-align: center;
+        .btn {
+          padding-right: 50px;
+          padding-left: 50px;
+        }
+        .bottom-note {
+          margin: 25px 0 0;
+          font-size: .875rem;
+          .text-link {
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,17 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
-@import "./variables.css";
-
-@import "./App.css";
+@import "./utils/variables.css";
+@import "./utils/Helpers.css";
 @import "./Menu.css";
 
 /* Global styles */
 :root {
   font-family: var(--font-family-base);
-  line-height: 1.5;
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
   color: var(--color-gray-cold-1);
-  background-color: var(--color-background);
   /* Switch to id 378 to test dark bg */
   background-image: url("https://picsum.photos/id/448/2000/1000");
   background-position: center;
@@ -40,6 +37,10 @@ body {
     margin: 0;
     cursor: pointer;
   }
+  input {
+    font-family: inherit;
+    font-size: 1rem;
+  }
   a {
     text-decoration: none;
     color: inherit;
@@ -51,7 +52,6 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  text-align: center;
 }
 
 /* Basic Iframe styling to fill the container */

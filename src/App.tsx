@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Menu from "@/components/Menu";
 import Auth from "@/pages/Auth";
 import Dashboard from "@/pages/Dashboard";
@@ -13,15 +13,17 @@ import AccountingLinks from "@/pages/Study/AccountingLinks";
 import TaskBoard from "@/pages/Study/TaskBoard";
 
 function App() {
+  const isAuthPage = useLocation().pathname === "/auth";
+
   return (
     <>
-      <Menu />
+      {!isAuthPage && <Menu />}
       <main>
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Dashboard />} />
           
-          {/* Living Room */}
+          {/* Living room */}
           <Route path="/living-room/task-hub" element={<TaskHub />} />
           <Route path="/living-room/calendar" element={<Calendar />} />
 
@@ -38,7 +40,7 @@ function App() {
           <Route path="/study/accounting-links" element={<AccountingLinks />} />
           <Route path="/study/task-board" element={<TaskBoard />} />
 
-          {/* Hobby Room */}
+          {/* Hobby room */}
           <Route path="/hobby-room/craft-log" element={<CraftLog />} />
           <Route path="/hobby-room/travel-log" element={<TravelLog />} />
         </Routes>
