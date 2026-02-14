@@ -16,6 +16,7 @@
   background-image: url("https://picsum.photos/id/448/2000/1000");
   background-position: center;
   background-size: cover;
+  interpolate-size: allow-keywords;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
