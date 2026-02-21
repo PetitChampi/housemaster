@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CraftLog = () => {
   return (
     <div className="iframe-container">

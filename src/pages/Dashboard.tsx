@@ -1,9 +1,8 @@
-// import houseImage from '@/assets/dummy-house.png'; // Make sure to have an image here
-
+// import houseImage from '@/assets/dummy-house.png';
 const Dashboard = () => {
   const style = {
     width: '100%',
-    height: '100vh',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

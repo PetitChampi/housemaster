@@ -1,4 +1,4 @@
-const TaskHub = () => {
+const AccountingLinks = () => {
   return (
     <div style={{ padding: '80px 20px 20px 20px' }}>
       <h1>Accounting links</h1>
@@ -7,4 +7,4 @@ const TaskHub = () => {
   );
 };
 
-export default TaskHub;
+export default AccountingLinks;

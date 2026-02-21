@@ -1,6 +1,4 @@
-import React from 'react';
-
-const TaskHub = () => {
+const SnoozeBuddy = () => {
   return (
     <div style={{ padding: '80px 20px 20px 20px' }}>
       <h1>Snooze buddy</h1>
@@ -9,4 +7,4 @@ const TaskHub = () => {
   );
 };
 
-export default TaskHub;
+export default SnoozeBuddy;
