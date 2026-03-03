@@ -11,6 +11,7 @@ import Calendar from "@/pages/LivingRoom/Calendar";
 import TaskHub from "@/pages/LivingRoom/TaskHub";
 import AccountingLinks from "@/pages/Study/AccountingLinks";
 import TaskBoard from "@/pages/Study/TaskBoard";
+import ToolLayout from "@/components/ToolLayout";
 
 function App() {
   const isAuthPage = useLocation().pathname === "/auth";
@@ -24,25 +25,52 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           
           {/* Living room */}
-          <Route path="/living-room/task-hub" element={<TaskHub />} />
-          <Route path="/living-room/calendar" element={<Calendar />} />
+          <Route
+            path="/living-room/task-hub"
+            element={<ToolLayout><TaskHub /></ToolLayout>}
+          />
+          <Route
+            path="/living-room/calendar"
+            element={<ToolLayout><Calendar /></ToolLayout>}
+          />
 
           {/* Kitchen */}
-          <Route path="/kitchen/grocery-manager" element={<GroceryManager />} />
+          <Route
+            path="/kitchen/grocery-manager"
+            element={<ToolLayout><GroceryManager /></ToolLayout>}
+          />
 
           {/* Bathroom */}
-          <Route path="/bathroom/quote-of-the-day" element={<QuoteOfTheDay />} />
+          <Route
+            path="/bathroom/quote-of-the-day"
+            element={<ToolLayout><QuoteOfTheDay /></ToolLayout>}
+          />
 
           {/* Bedroom */}
-          <Route path="/bedroom/snooze-buddy" element={<SnoozeBuddy />} />
+          <Route
+            path="/bedroom/snooze-buddy"
+            element={<ToolLayout><SnoozeBuddy /></ToolLayout>}
+          />
 
           {/* Study */}
-          <Route path="/study/accounting-links" element={<AccountingLinks />} />
-          <Route path="/study/task-board" element={<TaskBoard />} />
+          <Route
+            path="/study/accounting-links"
+            element={<ToolLayout><AccountingLinks /></ToolLayout>}
+          />
+          <Route
+            path="/study/task-board"
+            element={<ToolLayout><TaskBoard /></ToolLayout>}
+          />
 
           {/* Hobby room */}
-          <Route path="/hobby-room/craft-log" element={<CraftLog />} />
-          <Route path="/hobby-room/travel-log" element={<TravelLog />} />
+          <Route
+            path="/hobby-room/craft-log"
+            element={<ToolLayout><CraftLog /></ToolLayout>}
+          />
+          <Route
+            path="/hobby-room/travel-log"
+            element={<ToolLayout><TravelLog /></ToolLayout>}
+          />
         </Routes>
       </main>
     </>
