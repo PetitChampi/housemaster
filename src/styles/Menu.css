@@ -1,3 +1,5 @@
+@import "./utils/Animations.css";
+
 .app-header {
   position: fixed;
   top: 20px;
@@ -271,18 +273,4 @@
       color: var(--color-error-dark);
     }
   }
-}
-
-@keyframes jellyBounceIn {
-  0%   { transform: scale(0); opacity: 0; }
-  30%  { transform: scale(1.1, 0.9); opacity: 1; }
-  50%  { transform: scale(0.95, 1.05); }
-  80%  { transform: scale(1.02, 0.98); }
-  100% { transform: scale(1); }
-}
-@keyframes jellyBounceOut {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.03, 0.97); }
-  50%  { transform: scale(0.92, 1.08); opacity: 1; }
-  100% { transform: scale(0); opacity: 0; }
 }
