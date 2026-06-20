@@ -12,6 +12,9 @@ export interface AppContextType {
   isMenuOpen: boolean;
   toggleMenu: () => void;
   closeMenu: () => void;
+  isFullscreen: boolean;
+  setIsFullscreen: (isFullscreen: boolean) => void;
+  toggleFullscreen: () => void;
   user: User;
 }
 

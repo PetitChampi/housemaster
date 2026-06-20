@@ -8,15 +8,20 @@ interface AppProviderProps {
 
 const AppProvider = ({ children }: AppProviderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const user: User = { name: "Reginald", role: "GUEST", avatarUrl: "/img/reginald-penguin.jpg" };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
 
   const value: AppContextType = {
     isMenuOpen,
     toggleMenu,
     closeMenu,
+    isFullscreen,
+    setIsFullscreen,
+    toggleFullscreen,
     user,
   };
 

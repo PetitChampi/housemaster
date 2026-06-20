@@ -12,14 +12,16 @@ import TaskHub from "@/pages/LivingRoom/TaskHub";
 import AccountingLinks from "@/pages/Study/AccountingLinks";
 import TaskBoard from "@/pages/Study/TaskBoard";
 import ToolLayout from "@/components/ToolLayout";
+import { useApp } from "@/context/AppContext";
 
 function App() {
+  const { isFullscreen } = useApp();
   const isAuthPage = useLocation().pathname === "/auth";
 
   return (
     <>
       {!isAuthPage && <Menu />}
-      <main>
+      <main className={isFullscreen ? "fullscreen" : undefined}>
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Dashboard />} />
