@@ -1,9 +1,9 @@
 .text-link {
-  color: var(--color-crimson-2);
+  color: var(--colour-crimson-2);
   cursor: pointer;
   transition: color var(--transition-base);
   &:hover {
-    color: var(--color-crimson-3);
+    color: var(--colour-crimson-3);
   }
 }
 
@@ -21,10 +21,10 @@
   &.crimson {
     box-shadow: var(--shadow-md-crimson);
     &.primary {
-      background-color: var(--color-crimson-2);
+      background-color: var(--colour-crimson-2);
       color: white;
       &:hover {
-        background-color: var(--color-crimson-3);
+        background-color: var(--colour-crimson-3);
       }
     }
   }
@@ -49,7 +49,7 @@
     box-shadow: var(--shadow-md-cold);
     transition: all var(--transition-base);
     &:focus {
-      border-color: var(--color-crimson-2);
+      border-color: var(--colour-crimson-2);
       outline: none;
       box-shadow: 0 0 0 3px rgba(154, 40, 69, 0.2);
     }

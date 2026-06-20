@@ -17,7 +17,7 @@
     height: var(--picture-size);
     border-radius: var(--radius-full);
     overflow: hidden;
-    background-color: var(--color-gray-cold-5);
+    background-color: var(--colour-grey-cold-5);
     border: 2px solid white;
     img {
       width: 100%;

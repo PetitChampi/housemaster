@@ -7,9 +7,9 @@
   z-index: var(--z-fixed);
   /* Button and burger */
   .menu-button {
-    background-color: color-mix(in srgb,var(--color-gray-cold-6) 70%,transparent);
+    background-color: color-mix(in srgb,var(--colour-grey-cold-6) 70%,transparent);
     backdrop-filter: blur(10px);
-    color: var(--color-gray-cold-1);
+    color: var(--colour-grey-cold-1);
     border: 1px solid white;
     border-radius: var(--radius-xl);
     padding: 10px 10px 10px 20px;
@@ -25,10 +25,10 @@
     transition: all var(--transition-base);
     &:hover {
       .burger {
-        border: 1px solid var(--color-crimson-4);
-        background-color: var(--color-crimson-6);
+        border: 1px solid var(--colour-crimson-4);
+        background-color: var(--colour-crimson-6);
         .bar {
-          background-color: var(--color-crimson-2);
+          background-color: var(--colour-crimson-2);
         }
       }
     }
@@ -53,7 +53,7 @@
       .bar {
         width: 20px;
         height: 1.5px;
-        background-color: var(--color-gray-cold-1);
+        background-color: var(--colour-grey-cold-1);
         border-radius: var(--radius-sm);
         transition: all var(--transition-fast);
         &:nth-child(2) {
@@ -76,7 +76,7 @@
   max-width: 100%;
   max-height: calc(100% - 40px);
   overflow: auto;
-  background-color: color-mix(in srgb,var(--color-gray-cold-6) 70%,transparent);
+  background-color: color-mix(in srgb,var(--colour-grey-cold-6) 70%,transparent);
   border: 1px solid white;
   backdrop-filter: blur(10px);
   border-radius: var(--radius-xl);
@@ -111,12 +111,12 @@
         .user-name {
           font-weight: 600;
           font-size: .875rem;
-          color: var(--color-gray-cold-2);
+          color: var(--colour-grey-cold-2);
         }
         .user-role {
           margin-bottom: 10px;
-          background-color: var(--color-crimson-5);
-          color: var(--color-crimson-2);
+          background-color: var(--colour-crimson-5);
+          color: var(--colour-crimson-2);
           text-transform: uppercase;
           font-size: 10px;
           font-weight: 600;
@@ -130,7 +130,7 @@
         --dimensions: 40px;
         width: var(--dimensions);
         height: var(--dimensions);
-        background-color: var(--color-gray-cold-5);
+        background-color: var(--colour-grey-cold-5);
         border-radius: var(--radius-full);
         overflow: hidden;
         img {
@@ -144,7 +144,7 @@
       --close-btn-dimensions: 35px;
       background-color: white;
       box-shadow: var(--shadow-md-warm);
-      color: var(--color-gray-cold-1);
+      color: var(--colour-grey-cold-1);
       border-radius: var(--radius-full);
       width: var(--close-btn-dimensions);
       height: var(--close-btn-dimensions);
@@ -155,9 +155,9 @@
       border: 1px solid white;
       transition: all var(--transition-base);
       &:hover {
-        border: 1px solid var(--color-crimson-4);
-        background-color: var(--color-crimson-6);
-        color: var(--color-crimson-2);
+        border: 1px solid var(--colour-crimson-4);
+        background-color: var(--colour-crimson-6);
+        color: var(--colour-crimson-2);
       }
     }
   }
@@ -167,7 +167,7 @@
     gap: 10px;
     .rooms-title {
       font-size: var(--font-size-xs);
-      color: var(--color-gray-cold-1);
+      color: var(--colour-grey-cold-1);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: .05rem;
@@ -179,7 +179,7 @@
       &::after {
         content: "";
         height: 1px;
-        background-color: var(--color-gray-cold-5);
+        background-color: var(--colour-grey-cold-5);
         flex-grow: 1;
       }
     }
@@ -219,7 +219,7 @@
         .chevron {
           display: flex;
           transition: transform var(--transition-base);
-          color: var(--color-gray-cold-3);
+          color: var(--colour-grey-cold-3);
         }
       }
       .menu-item-children {
@@ -232,23 +232,23 @@
             margin: 0;
             padding: 5px 5px 5px 45px;
             border-radius: var(--radius-lg);
-            color: var(--color-crimson-2);
+            color: var(--colour-crimson-2);
             font-size: var(--font-size-sm);
             transition: all var(--transition-fast);
             &:hover {
-              background-color: var(--color-crimson-6);
+              background-color: var(--colour-crimson-6);
               .icon {
                 transform: translateX(5px);
               }
             }
             .icon {
-              color: var(--color-crimson-3);
+              color: var(--colour-crimson-3);
               transition: transform var(--transition-fast);
             }
           }
           &.active {
             .item {
-              background-color: var(--color-crimson-5);
+              background-color: var(--colour-crimson-5);
             }
           }
         }
@@ -257,7 +257,7 @@
   }
   .exit-button {
     background: white;
-    color: var(--color-error);
+    color: var(--colour-error);
     box-shadow: var(--shadow-md-warm);
     border-radius: var(--radius-lg);
     margin-top: 10px;
@@ -269,8 +269,8 @@
     cursor: pointer;
     transition: all var(--transition-base);
     &:hover {
-      background-color: var(--color-error-light);
-      color: var(--color-error-dark);
+      background-color: var(--colour-error-light);
+      color: var(--colour-error-dark);
     }
   }
 }

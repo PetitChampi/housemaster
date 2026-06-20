@@ -7,7 +7,7 @@
 :root {
   font-family: var(--font-family-base);
   /* color-scheme: light dark; */
-  color: var(--color-gray-cold-1);
+  color: var(--colour-grey-cold-1);
   /* Switch to id 378 to test dark bg */
   background-image: url("https://picsum.photos/id/448/2000/1000");
   background-position: center;
@@ -58,7 +58,7 @@ body {
         .tool-master-container {
           border: none;
           border-radius: 0;
-          background-color: var(--color-gray-warm-6);
+          background-color: var(--colour-grey-warm-6);
           .tool-content {
             overflow: hidden;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -99,7 +99,7 @@ body {
             box-shadow: var(--shadow-md-warm);
             transition: background-color var(--transition-base);
             &:hover {
-              background-color: var(--color-gray-warm-5);
+              background-color: var(--colour-grey-warm-5);
             }
           }
         }

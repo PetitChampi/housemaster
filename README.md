@@ -1,16 +1,66 @@
-# React + Vite
+# Housemaster (WIP)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Housemaster will be a household companion app in the form of a small game. You move a character around a house, and each room holds objects you can interact with. Walk up to the fridge in the kitchen and you open the grocery manager; walk up to a desk in the study and you open the task board. The house is meant to be rendered in 3D (Three.js) and viewed roughly isometrically, with keyboard or controller movement.
 
-Currently, two official plugins are available:
+The same tools are also reachable from the menu, so in theory you never have to walk anywhere if you don't want to. Basically, the menu is the practical shortcut, and the house is the main scenic route.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> **Status:** early. The menu, routing, auth screen and the tool window shell are in place. The 3D house is not built yet, and most room tools are placeholders or embeds rather than finished features. Treat this as a working skeleton, not a shipped app just yet.
 
-## React Compiler
+## The idea
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A household is the unit of the app. Each member (a parent, a child, etc) has a named character; anyone visiting can use the guest character. Parents hold a "super" role that lets them change shared data (adding recipes or shopping items, for example, or accessing certain restricted parts of the app like the accounting board; your kids don't need to see the entire financial breakdown of your household ;) ) while everyone else can do the day-to-day things like ticking items off a list. Roles are modelled (`GUEST`, `MEMBER`, `ADMIN`) but not yet enforced.
 
-## Expanding the ESLint configuration
+## Rooms and tools
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The menu mirrors the planned layout of the house. Each room exposes one or more tools:
+
+| Room        | Tools                          |
+| ----------- | ------------------------------ |
+| Living room | Task hub, Calendar             |
+| Kitchen     | Grocery manager                |
+| Bathroom    | Quote of the day               |
+| Bedroom     | Snooze buddy (relaxing video and podcase index) |
+| Study       | Accounting links, Task board   |
+| Hobby room  | Craft log, Travel log          |
+
+Some tools currently embed an external page in an iframe (the grocery manager is one) as a stand-in until an eventual native version exists. Ultimately, I want the current grocery app, which currently exists as its own separately hosted app, to be accessible within Housemaster. I'll work out how that'll look like later down the line.
+
+## Tech stack
+
+- **React 19** (w/ TypeScript on strict mode)
+- **Vite** for dev server and build
+- **React Router** for navigation between tools
+- **Tabler Icons** for the icon set
+
+Three.js and a state-management library are planned but not yet added.
+
+## Getting started
+
+You need Node.js 20.19+ (or 22.12+) for the current Vite version.
+
+```bash
+npm install      # install dependencies
+npm run dev      # start the dev server (default http://localhost:5173)
+npm run build    # type-check and build for production into dist/
+npm run preview  # serve the production build locally
+npm run lint     # run ESLint
+```
+
+## Project layout
+
+```
+src/
+  main.tsx            App entry; sets up router and the app provider
+  App.tsx             Route table and top-level layout
+  components/         Shared UI (Menu, AuthPanel, the tool window shell)
+  context/            App-wide state (menu, fullscreen, current user)
+  pages/              One folder per room, one file per tool
+  styles/             Global CSS, design tokens and helpers
+```
+
+Tools live under `pages/<Room>/<Tool>.tsx`, each wrapped at the route level by `ToolLayout`, which provides the window chrome (fullscreen toggle and close button).
+
+## Conventions
+
+- **Design tokens:** colours, spacing, radii, shadows and type are defined as CSS custom properties in `src/styles/utils/variables.css`. When writing CSS, each for a token when available rather than a raw value.
+- **Spelling:** custom identifiers and user-facing text use British spelling (for example `--colour-grey-cold-1`). After all, I live and work in the British Isles and as such, I like to leave a little bit of my local cultural flavour of language in my projects.

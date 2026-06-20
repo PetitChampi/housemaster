@@ -1,32 +1,32 @@
 :root {
-  /* Colors */
-  --color-info: #2196f3;
-  --color-success: #4caf50;
-  --color-warning: #ff9800;
-  --color-error: #e50060;
-  --color-error-light: #ffeaf3;
-  --color-error-dark: #9d0041;
+  /* Colours */
+  --colour-info: #2196f3;
+  --colour-success: #4caf50;
+  --colour-warning: #ff9800;
+  --colour-error: #e50060;
+  --colour-error-light: #ffeaf3;
+  --colour-error-dark: #9d0041;
 
-  --color-gray-cold-1: #323c48;
-  --color-gray-cold-2: #495666;
-  --color-gray-cold-3: #7C8EA2;
-  --color-gray-cold-4: #ABB6C4;
-  --color-gray-cold-5: #DBDFE6;
-  --color-gray-cold-6: #F3F5F7;
+  --colour-grey-cold-1: #323c48;
+  --colour-grey-cold-2: #495666;
+  --colour-grey-cold-3: #7C8EA2;
+  --colour-grey-cold-4: #ABB6C4;
+  --colour-grey-cold-5: #DBDFE6;
+  --colour-grey-cold-6: #F3F5F7;
 
-  --color-gray-warm-1: #3f3b3b;
-  --color-gray-warm-2: #554E4F;
-  --color-gray-warm-3: #938A8B;
-  --color-gray-warm-4: #BAB5B5;
-  --color-gray-warm-5: #E2DFDF;
-  --color-gray-warm-6: #F5F4F4;
+  --colour-grey-warm-1: #3f3b3b;
+  --colour-grey-warm-2: #554E4F;
+  --colour-grey-warm-3: #938A8B;
+  --colour-grey-warm-4: #BAB5B5;
+  --colour-grey-warm-5: #E2DFDF;
+  --colour-grey-warm-6: #F5F4F4;
 
-  --color-crimson-1: #711D33;
-  --color-crimson-2: #9A2845;
-  --color-crimson-3: #D25374;
-  --color-crimson-4: #EAAEBD;
-  --color-crimson-5: #F9E7EB;
-  --color-crimson-6: #FDF7F8;
+  --colour-crimson-1: #711D33;
+  --colour-crimson-2: #9A2845;
+  --colour-crimson-3: #D25374;
+  --colour-crimson-4: #EAAEBD;
+  --colour-crimson-5: #F9E7EB;
+  --colour-crimson-6: #FDF7F8;
 
   /* Border radius */
   --radius-sm: 5px;
@@ -38,9 +38,9 @@
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-  --shadow-md-warm: 0 2px 8px -2px color-mix(in srgb,var(--color-gray-warm-1) 30%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--color-gray-warm-1) 10%,transparent);
-  --shadow-md-cold: 0 2px 8px -2px color-mix(in srgb,var(--color-gray-cold-1) 40%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--color-gray-cold-1) 20%,transparent);
-  --shadow-md-crimson: 0 2px 8px -2px color-mix(in srgb,var(--color-crimson-2) 40%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--color-crimson-2) 20%,transparent);
+  --shadow-md-warm: 0 2px 8px -2px color-mix(in srgb,var(--colour-grey-warm-1) 30%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--colour-grey-warm-1) 10%,transparent);
+  --shadow-md-cold: 0 2px 8px -2px color-mix(in srgb,var(--colour-grey-cold-1) 40%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--colour-grey-cold-1) 20%,transparent);
+  --shadow-md-crimson: 0 2px 8px -2px color-mix(in srgb,var(--colour-crimson-2) 40%,transparent), 0 1px 4px -2px color-mix(in srgb,var(--colour-crimson-2) 20%,transparent);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
   --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.1);
