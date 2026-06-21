@@ -8,6 +8,7 @@
   font-family: var(--font-family-base);
   /* color-scheme: light dark; */
   color: var(--colour-grey-cold-1);
+  background-color: var(--colour-grey-warm-4);
   /* Switch to id 378 to test dark bg */
   background-image: url("https://picsum.photos/id/448/2000/1000");
   background-position: center;
@@ -50,13 +51,22 @@ body {
     margin: 0;
     padding: 0;
     main {
-      padding: 10px;
+      position: relative;
       height: 100vh;
-      transition: padding var(--transition-base);
+      overflow: hidden;
+      .house-backdrop {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+      }
       &.fullscreen {
-        padding: 0;
         .tool-master-container {
-          border: none;
+          inset: 0;
+          border: 0px solid white;
           border-radius: 0;
           background-color: var(--colour-grey-warm-6);
           .tool-content {
@@ -66,10 +76,9 @@ body {
         }
       }
       .tool-master-container {
-        position: relative;
+        position: absolute;
+        inset: 10px;
         z-index: var(--z-tool-container);
-        width: 100%;
-        height: 100%;
         border: 1px solid white;
         background-color: rgba(255, 255, 255, .7);
         backdrop-filter: blur(10px);
@@ -77,7 +86,13 @@ body {
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: border-radius var(--transition-base), background-color var(--transition-base), border var(--transition-base);
+        transition: inset var(--transition-base), border-radius var(--transition-base), background-color var(--transition-base), border var(--transition-base);
+        /* NOTE: the --transition-* tokens already include the easing */
+        animation: toolWindowIn var(--transition-base) both;
+        &.is-closing {
+          animation: toolWindowOut var(--transition-fast) forwards;
+          pointer-events: none;
+        }
         .tool-bar {
           position: sticky;
           top: 0;
@@ -106,6 +121,7 @@ body {
         .tool-content {
           flex: 1;
           position: relative;
+          transition: border-radius var(--transition-base);
         }
         /* give iframes this class to fill whatever container they are in */
         .iframe-content {

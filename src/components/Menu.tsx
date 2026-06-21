@@ -1,34 +1,46 @@
-import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useApp } from "@/context/AppContext";
-import { IconX, IconSofa, IconToolsKitchen3, IconBath, IconBed, IconBriefcase, IconTriangleSquareCircle, IconChevronDown, IconArrowNarrowRight, IconLogout, Icon } from "@tabler/icons-react";
-
-type MenuLink = {
-  title: string;
-  icon?: Icon;
-  path: string;
-  children?: { title: string; path: string }[];
-};
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUiStore } from "@/store/uiStore";
+import { useAuthStore, useCurrentUser } from "@/store/authStore";
+import { useActiveTool } from "@/tools/useActiveTool";
+import { rooms } from "@/tools/registry";
+import { canAccess } from "@/lib/roles";
+import { IconX, IconChevronDown, IconArrowNarrowRight, IconLogout } from "@tabler/icons-react";
 
 const Menu = () => {
-  const { isMenuOpen, toggleMenu, closeMenu, user } = useApp();
+  const isMenuOpen = useUiStore((s) => s.isMenuOpen);
+  const toggleMenu = useUiStore((s) => s.toggleMenu);
+  const closeMenu = useUiStore((s) => s.closeMenu);
+  const user = useCurrentUser();
+  const signOut = useAuthStore((s) => s.signOut);
   const navigate = useNavigate();
+  const { tool: activeTool, openTool } = useActiveTool();
 
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(isMenuOpen);
   const [isClosing, setIsClosing] = useState(false);
+  const [wasOpen, setWasOpen] = useState(isMenuOpen);
 
-  useEffect(() => {
+  // Respond to isMenuOpen changing during render rather than in an effect, the way react.dev's "You Might Not Need an Effect" suggests for state derived from a prop or store value.
+  // Opening mounts the menu at once; closing keeps it mounted and flags the closing animation, which then unmounts it from handleAnimationEnd.
+  if (isMenuOpen !== wasOpen) {
+    setWasOpen(isMenuOpen);
     if (isMenuOpen) {
       setIsMounted(true);
       setIsClosing(false);
     } else if (isMounted) {
-      setIsClosing(true); // start closing animation, keep mounted
+      setIsClosing(true);
     }
-  }, [isMenuOpen, isMounted]);
+  }
 
   const handleExit = () => {
     closeMenu();
+    signOut();
     navigate("/auth");
+  };
+
+  const handleOpenTool = (toolId: string) => {
+    openTool(toolId);
+    closeMenu();
   };
 
   const handleAnimationEnd: React.AnimationEventHandler<HTMLDivElement> = () => {
@@ -38,29 +50,17 @@ const Menu = () => {
     }
   };
 
-  const menuLinks: MenuLink[] = [
-    { title: "Living room", icon: IconSofa, path: "/living-room", children: [
-      { title: "Task hub", path: "/living-room/task-hub" },
-      { title: "Calendar", path: "/living-room/calendar" },
-    ]},
-    { title: "Kitchen", icon: IconToolsKitchen3, path: "/kitchen", children: [
-      { title: "Grocery manager", path: "/kitchen/grocery-manager" },
-    ]},
-    { title: "Bathroom", icon: IconBath, path: "/bathroom", children: [
-      { title: "Quote of the day", path: "/bathroom/quote-of-the-day" },
-    ]},
-    { title: "Bedroom", icon: IconBed, path: "/bedroom", children: [
-      { title: "Snooze buddy", path: "/bedroom/snooze-buddy" },
-    ]},
-    { title: "Study", icon: IconBriefcase, path: "/study", children: [
-      { title: "Accounting links", path: "/study/accounting-links" },
-      { title: "Task board", path: "/study/task-board" },
-    ]},
-    { title: "Hobby room", icon: IconTriangleSquareCircle, path: "/hobby-room", children: [
-      { title: "Craft log", path: "/hobby-room/craft-log" },
-      { title: "Travel log", path: "/hobby-room/travel-log" },
-    ]},
-  ];
+  // Each room keeps only the tools this user may open, and a room with nothing left to show drops out of the menu.
+  const visibleRooms = user
+    ? rooms
+        .map((room) => ({
+          ...room,
+          tools: room.tools.filter((tool) => canAccess(user.role, tool.minRole)),
+        }))
+        .filter((room) => room.tools.length > 0)
+    : [];
+
+  if (!user) return null;
 
   return (
     <>
@@ -99,27 +99,29 @@ const Menu = () => {
           <div className="rooms-list">
               <p className="rooms-title">Rooms</p>
 
-              {menuLinks.map((link) => {
-                const Icon = link.icon;
+              {visibleRooms.map((room) => {
+                const Icon = room.Icon;
                 return (
-                  <details key={link.path} className="room-item">
+                  <details key={room.id} className="room-item">
                     <summary>
                       <div className="title">
                         {Icon && <Icon size={20} stroke="1" className="icon" />}
-                        {link.title}
+                        {room.title}
                       </div>
                       <span className="chevron">
                         <IconChevronDown size={20} stroke="1.5" className="icon" />
                       </span>
                     </summary>
                     <div className="menu-item-children">
-                      {link.children?.map((child) => (
-                        <NavLink key={child.path} to={child.path} onClick={closeMenu}>
-                          <p className="item">
-                            <IconArrowNarrowRight size={20} stroke="1" className="icon" />
-                            <span className="title">{child.title}</span>
-                          </p>
-                        </NavLink>
+                      {room.tools.map((tool) => (
+                        <button
+                          key={tool.id}
+                          className={`tool-link ${activeTool?.id === tool.id ? "is-active" : ""}`}
+                          onClick={() => handleOpenTool(tool.id)}
+                        >
+                          <IconArrowNarrowRight size={20} stroke="1" className="icon" />
+                          <span className="title">{tool.title}</span>
+                        </button>
                       ))}
                     </div>
                   </details>

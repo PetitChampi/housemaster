@@ -4,11 +4,11 @@ Housemaster will be a household companion app in the form of a small game. You m
 
 The same tools are also reachable from the menu, so in theory you never have to walk anywhere if you don't want to. Basically, the menu is the practical shortcut, and the house is the main scenic route.
 
-> **Status:** early. The menu, routing, auth screen and the tool window shell are in place. The 3D house is not built yet, and most room tools are placeholders or embeds rather than finished features. Treat this as a working skeleton, not a shipped app just yet.
+> **Status:** early. Sign-in, the menu, role-gated tool navigation and the animated tool windows all work. The 3D house is not built yet, and most room tools are placeholders or embeds rather than finished features. Treat this as a working skeleton, not a shipped app just yet.
 
 ## The idea
 
-A household is the unit of the app. Each member (a parent, a child, etc) has a named character; anyone visiting can use the guest character. Parents hold a "super" role that lets them change shared data (adding recipes or shopping items, for example, or accessing certain restricted parts of the app like the accounting board; your kids don't need to see the entire financial breakdown of your household ;) ) while everyone else can do the day-to-day things like ticking items off a list. Roles are modelled (`GUEST`, `MEMBER`, `ADMIN`) but not yet enforced.
+A household is the unit of the app. Each member (a parent, a child, etc) has a named character; anyone visiting can use the guest character. Parents hold a "super" role that lets them change shared data (adding recipes or shopping items, for example, or accessing certain restricted parts of the app like the accounting board; your kids don't need to see the entire financial breakdown of your household ;) ) while everyone else can do the day-to-day things like ticking items off a list. Roles (`GUEST`, `MEMBER`, `ADMIN`) are enforced.
 
 ## Rooms and tools
 
@@ -29,14 +29,15 @@ Some tools currently embed an external page in an iframe (the grocery manager is
 
 - **React 19** (w/ TypeScript on strict mode)
 - **Vite** for dev server and build
-- **React Router** for navigation between tools
+- **React Router** for the auth/home split and the `?tool=` param
+- **Zustand** for state (session, menu, fullscreen)
 - **Tabler Icons** for the icon set
 
-Three.js and a state-management library are planned but not yet added.
+Three.js is planned but not yet added.
 
 ## Getting started
 
-You need Node.js 20.19+ (or 22.12+) for the current Vite version.
+You'll want a recent Node installed (26 at the time of writing). A Docker setup will probably pin this down properly later.
 
 ```bash
 npm install      # install dependencies
@@ -50,15 +51,18 @@ npm run lint     # run ESLint
 
 ```
 src/
-  main.tsx            App entry; sets up router and the app provider
-  App.tsx             Route table and top-level layout
-  components/         Shared UI (Menu, AuthPanel, the tool window shell)
-  context/            App-wide state (menu, fullscreen, current user)
-  pages/              One folder per room, one file per tool
+  main.tsx            App entry (mounts the router)
+  App.tsx             Route table and the signed-in / signed-out split
+  components/         Shared UI (Menu, AuthPanel, ToolWindow, the house backdrop)
+  pages/              The auth and home screens, plus one folder per room
+  tools/              Tool registry and the hook that opens and closes tools
+  store/              Zustand stores (session, menu, fullscreen)
+  lib/                Auth, password hashing and role checks
+  data/               Household members (seed data for now)
   styles/             Global CSS, design tokens and helpers
 ```
 
-Tools live under `pages/<Room>/<Tool>.tsx`, each wrapped at the route level by `ToolLayout`, which provides the window chrome (fullscreen toggle and close button).
+Tools live under `pages/<Room>/<Tool>.tsx`. Which one is open is held in the URL as a `?tool=` parameter. The registry in `tools/` maps that parameter to a component, and `ToolWindow` wraps it with the window chrome (fullscreen toggle and close button).
 
 ## Conventions
 
