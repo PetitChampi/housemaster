@@ -1,10 +1,10 @@
 # Housemaster (WIP)
 
-Housemaster will be a household companion app in the form of a small game. You move a character around a house, and each room holds objects you can interact with. Walk up to the fridge in the kitchen and you open the grocery manager; walk up to a desk in the study and you open the task board. The house is meant to be rendered in 3D (Three.js) and viewed roughly isometrically, with keyboard or controller movement.
+Housemaster will be a household companion app in the form of a small game. You move a character around a house, and each room holds objects you can interact with. Walk up to the fridge in the kitchen and you open the grocery manager; walk up to a desk in the study and you open the kanban board. The house is meant to be rendered in 3D (Three.js) and viewed roughly isometrically, with keyboard or controller movement.
 
 The same tools are also reachable from the menu, so in theory you never have to walk anywhere if you don't want to. Basically, the menu is the practical shortcut, and the house is the main scenic route.
 
-> **Status:** early. Sign-in, the menu, role-gated tool navigation and the animated tool windows all work. The 3D house is not built yet, and most room tools are placeholders or embeds rather than finished features. Treat this as a working skeleton, not a shipped app just yet.
+> **Status:** early. Sign-in, the menu, role-gated tool navigation and the animated tool windows all work. The 3D house is not built yet, and while a few room tools are built out, the rest are still placeholders or embeds. Treat this as a working skeleton, not a shipped app just yet.
 
 ## The idea
 
@@ -20,7 +20,7 @@ The menu mirrors the planned layout of the house. Each room exposes one or more 
 | Kitchen     | Grocery manager                |
 | Bathroom    | Quote of the day               |
 | Bedroom     | Snooze buddy (relaxing video and podcase index) |
-| Study       | Accounting links, Task board   |
+| Study       | Accounting links, Kanban board   |
 | Hobby room  | Craft log, Travel log          |
 
 Some tools currently embed an external page in an iframe (the grocery manager is one) as a stand-in until an eventual native version exists. Ultimately, I want the current grocery app, which currently exists as its own separately hosted app, to be accessible within Housemaster. I'll work out how that'll look like later down the line.
@@ -53,11 +53,11 @@ npm run lint     # run ESLint
 src/
   main.tsx            App entry (mounts the router)
   App.tsx             Route table and the signed-in / signed-out split
-  components/         Shared UI (Menu, AuthPanel, ToolWindow, the house backdrop)
+  components/         Shared UI (Menu, AuthPanel, ToolWindow, Modal, the house backdrop)
   pages/              The auth and home screens, plus one folder per room
   tools/              Tool registry and the hook that opens and closes tools
   store/              Zustand stores (session, menu, fullscreen)
-  lib/                Auth, password hashing and role checks
+  lib/                Auth, hashing, roles and small shared helpers
   data/               Household members (seed data for now)
   styles/             Global CSS, design tokens and helpers
 ```
@@ -66,5 +66,6 @@ Tools live under `pages/<Room>/<Tool>.tsx`. Which one is open is held in the URL
 
 ## Conventions
 
-- **Design tokens:** colours, spacing, radii, shadows and type are defined as CSS custom properties in `src/styles/utils/variables.css`. When writing CSS, each for a token when available rather than a raw value.
+- **Design tokens:** colours, spacing, radii, shadows and type are defined as CSS custom properties in `src/styles/utils/variables.css`. When writing CSS, reach for a token when available rather than a raw value.
+- **Tools:** each tool keeps its own CSS (nested to match its markup) plus a few local `--` colour variables for its own palette, leaning on the global tokens for everything else. Its window chrome follows a light/dark and warm/cold theme set per tool in the registry.
 - **Spelling:** custom identifiers and user-facing text use British spelling (for example `--colour-grey-cold-1`). After all, I live and work in the British Isles and as such, I like to leave a little bit of my local cultural flavour of language in my projects.

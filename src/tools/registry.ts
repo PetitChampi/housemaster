@@ -16,7 +16,7 @@ import GroceryManager from "@/pages/Kitchen/GroceryManager";
 import QuoteOfTheDay from "@/pages/Bathroom/QuoteOfTheDay";
 import SnoozeBuddy from "@/pages/Bedroom/SnoozeBuddy";
 import AccountingLinks from "@/pages/Study/AccountingLinks";
-import TaskBoard from "@/pages/Study/TaskBoard";
+import KanbanBoard from "@/pages/Study/KanbanBoard";
 import CraftLog from "@/pages/HobbyRoom/CraftLog";
 import TravelLog from "@/pages/HobbyRoom/TravelLog";
 
@@ -113,7 +113,7 @@ const rawRooms: RawRoom[] = [
         minRole: "ADMIN",
         theme: { mode: "dark", temperature: "cold" },
       },
-      { slug: "task-board", title: "Task board", Component: TaskBoard },
+      { slug: "kanban-board", title: "Kanban board", Component: KanbanBoard },
     ],
   },
   {
