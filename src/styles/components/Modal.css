@@ -1,0 +1,58 @@
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background-color: color-mix(in srgb, var(--colour-grey-warm-3) 50%, transparent);
+  backdrop-filter: blur(4px);
+  /* the --transition-* tokens already include easing */
+  animation: modalIn var(--transition-base) both;
+  &.is-closing {
+    animation: modalOut var(--transition-fast) forwards;
+    pointer-events: none;
+  }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Structure only. Each tool themes the panel via a className. */
+.modal-panel {
+  position: relative;
+  width: 420px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    .modal-title {
+      margin: 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.3;
+    }
+    .modal-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  }
+}

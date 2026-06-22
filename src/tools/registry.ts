@@ -20,6 +20,13 @@ import TaskBoard from "@/pages/Study/TaskBoard";
 import CraftLog from "@/pages/HobbyRoom/CraftLog";
 import TravelLog from "@/pages/HobbyRoom/TravelLog";
 
+export interface ToolTheme {
+  mode: "light" | "dark";
+  temperature: "warm" | "cold";
+}
+
+const DEFAULT_THEME: ToolTheme = { mode: "light", temperature: "warm" };
+
 export interface ToolDef {
   id: string;
   title: string;
@@ -27,6 +34,7 @@ export interface ToolDef {
   roomTitle: string;
   Component: ComponentType;
   minRole: UserRole;
+  theme: ToolTheme;
 }
 
 export interface RoomDef {
@@ -41,6 +49,7 @@ interface RawTool {
   title: string;
   Component: ComponentType;
   minRole?: UserRole;
+  theme?: ToolTheme;
 }
 
 interface RawRoom {
@@ -84,7 +93,12 @@ const rawRooms: RawRoom[] = [
     title: "Bedroom",
     Icon: IconBed,
     tools: [
-      { slug: "snooze-buddy", title: "Snooze buddy", Component: SnoozeBuddy },
+      {
+        slug: "snooze-buddy",
+        title: "Snooze buddy",
+        Component: SnoozeBuddy,
+        theme: { mode: "dark", temperature: "warm" },
+      },
     ],
   },
   {
@@ -101,7 +115,12 @@ const rawRooms: RawRoom[] = [
     title: "Hobby room",
     Icon: IconTriangleSquareCircle,
     tools: [
-      { slug: "craft-log", title: "Craft log", Component: CraftLog },
+      {
+        slug: "craft-log",
+        title: "Craft log",
+        Component: CraftLog,
+        theme: { mode: "dark", temperature: "warm" },
+      },
       { slug: "travel-log", title: "Travel log", Component: TravelLog },
     ],
   },
@@ -118,6 +137,7 @@ export const rooms: RoomDef[] = rawRooms.map((room) => ({
     roomTitle: room.title,
     Component: t.Component,
     minRole: t.minRole ?? "GUEST",
+    theme: t.theme ?? DEFAULT_THEME,
   })),
 }));
 

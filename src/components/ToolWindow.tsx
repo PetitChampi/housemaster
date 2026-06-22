@@ -27,6 +27,8 @@ const ToolWindow = ({ tool, onClose }: ToolWindowProps) => {
   return (
     <div
       className={`tool-master-container ${isClosing ? "is-closing" : ""}`}
+      data-mode={tool.theme.mode}
+      data-temp={tool.theme.temperature}
       onAnimationEnd={handleAnimationEnd}
     >
       <div className="tool-bar">

@@ -68,19 +68,51 @@ body {
           inset: 0;
           border: 0px solid white;
           border-radius: 0;
-          background-color: var(--colour-grey-warm-6);
+          background-color: var(--window-fullscreen-surface);
           .tool-content {
-            overflow: hidden;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
           }
         }
       }
       .tool-master-container {
+        /* Themed per tool via data-mode / data-temp; defaults to light/warm. */
+        --window-surface: rgba(255, 255, 255, 0.7);
+        --window-border: white;
+        --window-btn-bg: white;
+        --window-btn-hover: var(--colour-grey-warm-5);
+        --window-btn-text: var(--colour-grey-cold-1);
+        --window-fullscreen-surface: var(--colour-grey-warm-6);
+        &[data-mode="light"][data-temp="cold"] {
+          --window-surface: color-mix(in srgb, var(--colour-grey-cold-6) 75%, transparent);
+          --window-btn-hover: var(--colour-grey-cold-5);
+          --window-fullscreen-surface: var(--colour-grey-cold-6);
+        }
+        &[data-mode="light"][data-temp="warm"] {
+          --window-surface: color-mix(in srgb, var(--colour-grey-warm-6) 75%, transparent);
+          --window-btn-hover: var(--colour-grey-warm-5);
+          --window-fullscreen-surface: var(--colour-grey-warm-6);
+        }
+        &[data-mode="dark"][data-temp="cold"] {
+          --window-surface: color-mix(in srgb, var(--colour-grey-cold-1) 78%, transparent);
+          --window-border: rgba(255, 255, 255, 0.14);
+          --window-btn-bg: rgba(255, 255, 255, 0.1);
+          --window-btn-hover: rgba(255, 255, 255, 0.18);
+          --window-btn-text: var(--colour-grey-cold-6);
+          --window-fullscreen-surface: var(--colour-grey-cold-1);
+        }
+        &[data-mode="dark"][data-temp="warm"] {
+          --window-surface: color-mix(in srgb, var(--colour-grey-warm-1) 78%, transparent);
+          --window-border: rgba(255, 255, 255, 0.14);
+          --window-btn-bg: rgba(255, 255, 255, 0.1);
+          --window-btn-hover: rgba(255, 255, 255, 0.18);
+          --window-btn-text: var(--colour-grey-warm-6);
+          --window-fullscreen-surface: var(--colour-grey-warm-1);
+        }
         position: absolute;
         inset: 10px;
         z-index: var(--z-tool-container);
-        border: 1px solid white;
-        background-color: rgba(255, 255, 255, .7);
+        border: 1px solid var(--window-border);
+        background-color: var(--window-surface);
         backdrop-filter: blur(10px);
         border-radius: var(--radius-xl);
         overflow: hidden;
@@ -109,18 +141,20 @@ body {
             align-items: center;
             justify-content: center;
             border-radius: var(--radius-xl);
-            background-color: white;
-            border: 1px solid white;
+            background-color: var(--window-btn-bg);
+            border: 1px solid var(--window-border);
+            color: var(--window-btn-text);
             box-shadow: var(--shadow-md-warm);
             transition: background-color var(--transition-base);
             &:hover {
-              background-color: var(--colour-grey-warm-5);
+              background-color: var(--window-btn-hover);
             }
           }
         }
         .tool-content {
           flex: 1;
           position: relative;
+          overflow: hidden;
           transition: border-radius var(--transition-base);
         }
         /* give iframes this class to fill whatever container they are in */
