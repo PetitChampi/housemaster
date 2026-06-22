@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local-only project brief
+BRIEF.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

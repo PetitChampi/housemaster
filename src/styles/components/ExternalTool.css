@@ -1,0 +1,61 @@
+.external-tool {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  background-color: var(--colour-grey-warm-6);
+  color: var(--colour-grey-cold-1);
+  .et-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    max-width: 26rem;
+    text-align: center;
+    .et-logo {
+      display: flex;
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .et-title {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin: 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-medium);
+      svg {
+        color: var(--colour-grey-cold-3);
+      }
+    }
+    .et-notice {
+      margin: 0;
+      color: var(--colour-grey-cold-3);
+      line-height: 1.6;
+    }
+    .et-open {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      background-color: var(--colour-crimson-2);
+      color: white;
+      font-weight: var(--font-weight-medium);
+      box-shadow: var(--shadow-md-crimson);
+      transition: background-color var(--transition-fast);
+      &:hover {
+        background-color: var(--colour-crimson-3);
+      }
+    }
+  }
+}

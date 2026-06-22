@@ -1,10 +1,14 @@
-const TaskHub = () => {
-  return (
-    <div style={{ padding: '80px 20px 20px 20px' }}>
-      <h1>Calendar</h1>
-      <p>This tool is under construction.</p>
-    </div>
-  );
-};
+import { IconCalendar } from "@tabler/icons-react";
+import ExternalTool from "@/components/ExternalTool";
 
-export default TaskHub;
+const Calendar = () => (
+  <ExternalTool
+    title="Calendar"
+    TitleIcon={IconCalendar}
+    url="https://calendar.google.com/calendar/u/0/r"
+    service="Google Calendar"
+    notice="For this MVP, the household calendar lives in Google Calendar and opens in a new tab. A calendar built natively into Housemaster is planned for a later version."
+  />
+);
+
+export default Calendar;
