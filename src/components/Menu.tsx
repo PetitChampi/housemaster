@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUiStore } from "@/store/uiStore";
 import { useAuthStore, useCurrentUser } from "@/store/authStore";
@@ -15,6 +15,9 @@ const Menu = () => {
   const signOut = useAuthStore((s) => s.signOut);
   const navigate = useNavigate();
   const { tool: activeTool, openTool } = useActiveTool();
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const [isMounted, setIsMounted] = useState(isMenuOpen);
   const [isClosing, setIsClosing] = useState(false);
@@ -50,6 +53,19 @@ const Menu = () => {
     }
   };
 
+  // Click anywhere outside menu (or toggle) closes it.
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (menuRef.current?.contains(target)) return;
+      if (menuButtonRef.current?.contains(target)) return;
+      closeMenu();
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [isMenuOpen, closeMenu]);
+
   // Each room keeps only the tools this user may open, and a room with nothing left to show drops out of the menu.
   const visibleRooms = user
     ? rooms
@@ -65,7 +81,7 @@ const Menu = () => {
   return (
     <>
       <header className="app-header">
-        <button className="menu-button" onClick={toggleMenu}>
+        <button className="menu-button" ref={menuButtonRef} onClick={toggleMenu}>
           Menu
           <div className="burger">
             <div className="bars">
@@ -77,6 +93,7 @@ const Menu = () => {
 
       {isMounted && (
         <div
+          ref={menuRef}
           className={`menu-container ${isClosing ? "is-closing" : ""}`}
           onAnimationEnd={handleAnimationEnd}
         >
