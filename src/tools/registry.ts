@@ -106,7 +106,13 @@ const rawRooms: RawRoom[] = [
     title: "Study",
     Icon: IconBriefcase,
     tools: [
-      { slug: "accounting-links", title: "Accounting links", Component: AccountingLinks, minRole: "ADMIN" },
+      {
+        slug: "accounting-links",
+        title: "Accounting links",
+        Component: AccountingLinks,
+        minRole: "ADMIN",
+        theme: { mode: "dark", temperature: "cold" },
+      },
       { slug: "task-board", title: "Task board", Component: TaskBoard },
     ],
   },

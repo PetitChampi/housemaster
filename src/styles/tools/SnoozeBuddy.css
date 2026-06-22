@@ -9,6 +9,7 @@
   --sb-text: var(--colour-grey-warm-6);
   --sb-text-muted: var(--colour-grey-warm-4);
   --sb-text-accent: #FFEDD9;
+  --modal-overlay-colour: var(--colour-grey-warm-3);
 
   position: relative;
   height: 100%;

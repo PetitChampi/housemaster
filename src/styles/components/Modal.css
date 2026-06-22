@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
-  background-color: color-mix(in srgb, var(--colour-grey-warm-3) 50%, transparent);
+  background-color: color-mix(in srgb, var(--modal-overlay-colour, var(--colour-grey-warm-3)) 50%, transparent);
   backdrop-filter: blur(4px);
   /* the --transition-* tokens already include easing */
   animation: modalIn var(--transition-base) both;
