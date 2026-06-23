@@ -14,11 +14,15 @@ interface ModalProps {
 
 const Modal = ({ title, onClose, children, className, isClosing = false, onClosed }: ModalProps) => {
   useEffect(() => {
+    // Listen in the capture phase + stop the event so an open modal takes Esc before the tool window to close the modal alone.
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onClose();
+      }
     };
-    document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
+    document.addEventListener("keydown", handleKey, true);
+    return () => document.removeEventListener("keydown", handleKey, true);
   }, [onClose]);
 
   // Fade-out plays on the overlay. Once it ends, tell parent to unmount.
