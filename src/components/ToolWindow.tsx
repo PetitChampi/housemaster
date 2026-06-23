@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconMaximize, IconMinimize, IconX } from "@tabler/icons-react";
 import { useUiStore } from "@/store/uiStore";
 import type { ToolDef } from "@/tools/registry";
@@ -15,6 +15,15 @@ const ToolWindow = ({ tool, onClose }: ToolWindowProps) => {
   const [isClosing, setIsClosing] = useState(false);
 
   const Tool = tool.Component;
+
+  // Esc closes the window, unless an open modal claimed the event first (listens in the capture phase).
+  useEffect(() => {
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsClosing(true);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
 
   // Close in two steps: flip on the closing animation, then drop tool from URL once played.
   const handleAnimationEnd: React.AnimationEventHandler<HTMLDivElement> = (event) => {
