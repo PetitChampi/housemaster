@@ -11,7 +11,7 @@ export class Loop {
 
   constructor(
     private readonly onStep: (dt: number) => void,
-    private readonly onRender: () => void
+    private readonly onRender: (frameTime: number) => void // receives real seconds elapsed this frame (for independent easing)
   ) {}
 
   start() {
@@ -42,6 +42,6 @@ export class Loop {
       this.accumulator -= SIM.timestep;
     }
 
-    this.onRender();
+    this.onRender(frameTime);
   };
 }

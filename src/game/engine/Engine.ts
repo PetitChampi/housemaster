@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CAMERA, INTERACTION, SCENE, SIM } from "@/game/config/constants";
+import { CAMERA, INTERACTION, SCENE } from "@/game/config/constants";
 import type { GameCallbacks } from "@/game/bridge/callbacks";
 import { Input } from "@/game/engine/Input";
 import { Loop } from "@/game/engine/Loop";
@@ -31,6 +31,8 @@ export class Engine {
 
   private active = true;
   private nearest: Interactable | null = null;
+  private hovered: Interactable | null = null;
+  private highlighted = new Set<Interactable>();
 
   constructor(
     private readonly container: HTMLElement,
@@ -71,6 +73,8 @@ export class Engine {
     this.resizeObserver.observe(container);
     document.addEventListener("visibilitychange", this.handleVisibility);
     this.renderer.domElement.addEventListener("pointerdown", this.handlePointer);
+    this.renderer.domElement.addEventListener("pointermove", this.handlePointerMove);
+    this.renderer.domElement.addEventListener("pointerleave", this.handlePointerLeave);
 
     // Nothing is in reach until the player walks up to an interactable
     this.callbacks.onPromptChange(null);
@@ -84,7 +88,10 @@ export class Engine {
   setActive(active: boolean) {
     this.active = active;
     this.input.setActive(active);
-    if (!active) this.setNearest(null);
+    if (!active) {
+      this.setNearest(null);
+      this.setHovered(null);
+    }
   }
 
   dispose() {
@@ -93,6 +100,8 @@ export class Engine {
     this.resizeObserver.disconnect();
     document.removeEventListener("visibilitychange", this.handleVisibility);
     this.renderer.domElement.removeEventListener("pointerdown", this.handlePointer);
+    this.renderer.domElement.removeEventListener("pointermove", this.handlePointerMove);
+    this.renderer.domElement.removeEventListener("pointerleave", this.handlePointerLeave);
     this.scene.traverse((object) => {
       if (object instanceof THREE.Mesh) {
         object.geometry.dispose();
@@ -127,39 +136,72 @@ export class Engine {
     }
   };
 
-  // Track the interactable in reach, update highlight + prompt
+  // Track the interactable in reach: drives prompt + highlight source
   private setNearest(next: Interactable | null) {
     if (next === this.nearest) return;
-    this.nearest?.setHighlighted(false);
-    next?.setHighlighted(true);
     this.nearest = next;
     this.callbacks.onPromptChange(next ? `Press E to open ${next.title}` : null);
+    this.refreshHighlights();
+  }
+
+  private setHovered(next: Interactable | null) {
+    if (next === this.hovered) return;
+    this.hovered = next;
+    this.renderer.domElement.style.cursor = next ? "pointer" : "default";
+    this.refreshHighlights();
+  }
+
+  // Highlight whatever is in reach or under the cursor
+  private refreshHighlights() {
+    const desired = new Set<Interactable>();
+    if (this.nearest) desired.add(this.nearest);
+    if (this.hovered) desired.add(this.hovered);
+    for (const item of this.highlighted) {
+      if (!desired.has(item)) item.setHighlighted(false);
+    }
+    for (const item of desired) {
+      if (!this.highlighted.has(item)) item.setHighlighted(true);
+    }
+    this.highlighted = desired;
   }
 
   // clicking on an interactable opens it, as an alternative to walking up and pressing E
   private handlePointer = (event: PointerEvent) => {
     if (!this.active) return;
-    const hit = pickInteractable(
+    const hit = this.pick(event);
+    if (hit && this.callbacks.canOpenTool(hit.toolId)) {
+      this.callbacks.onOpenTool(hit.toolId);
+    }
+  };
+
+  private handlePointerMove = (event: PointerEvent) => {
+    if (!this.active) return;
+    const hit = this.pick(event);
+    this.setHovered(hit && this.callbacks.canOpenTool(hit.toolId) ? hit : null);
+  };
+
+  private handlePointerLeave = () => this.setHovered(null);
+
+  private pick(event: PointerEvent): Interactable | null {
+    return pickInteractable(
       event,
       this.renderer.domElement,
       this.camera,
       this.raycaster,
       this.world.interactableMeshes()
     );
-    if (hit && this.callbacks.canOpenTool(hit.toolId)) {
-      this.callbacks.onOpenTool(hit.toolId);
-    }
-  };
+  }
 
-  private render = () => {
-    this.followPlayer();
+  private render = (frameTime: number) => {
+    this.followPlayer(frameTime);
     this.renderer.render(this.scene, this.camera);
   };
 
   // Ease the camera so it trails the player rather than snapping + keeps the fixed isometric offset
-  private followPlayer() {
+  // Exponential smoothing on the real frame time (identical follow speed on any refresh rate)
+  private followPlayer(frameTime: number) {
     const pos = this.player.worldPosition;
-    const t = Math.min(1, CAMERA.followLerp * SIM.timestep);
+    const t = 1 - Math.exp(-CAMERA.followLerp * frameTime);
     this.cameraTarget.x += (pos.x - this.cameraTarget.x) * t;
     this.cameraTarget.z += (pos.y - this.cameraTarget.z) * t;
     this.camera.position.set(
