@@ -12,8 +12,9 @@ dist
 dist-ssr
 *.local
 
-# Local-only project brief
+# Local-only project files
 BRIEF.md
+TODO.md
 
 # Editor directories and files
 .vscode/*
