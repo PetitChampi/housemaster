@@ -85,7 +85,12 @@ const rawRooms: RawRoom[] = [
     title: "Bathroom",
     Icon: IconBath,
     tools: [
-      { slug: "quote-of-the-day", title: "Quote of the day", Component: QuoteOfTheDay },
+      {
+        slug: "quote-of-the-day",
+        title: "Quote of the day",
+        Component: QuoteOfTheDay,
+        theme: { mode: "dark", temperature: "warm" },
+      },
     ],
   },
   {
