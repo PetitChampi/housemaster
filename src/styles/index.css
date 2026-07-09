@@ -5,6 +5,7 @@
 
 @import "./utils/variables.css";
 @import "./utils/Helpers.css";
+@import "./utils/Tooltip.css";
 @import "./Menu.css";
 
 :root {

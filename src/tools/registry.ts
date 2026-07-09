@@ -59,9 +59,8 @@ interface RawRoom {
   tools: RawTool[];
 }
 
-// The single source of truth for what exists in the house.
-// Both the menu and the tool window read from this, so adding a room or a tool happens in one place.
-// A tool's id is `${room}_${slug}`, which is also what rides in the URL.
+// The single source of truth for what exists in the house (menu and tool window read from this)
+// A tool's id is `${room}_${slug}`, which is also what you see in the URL
 const rawRooms: RawRoom[] = [
   {
     id: "living-room",
