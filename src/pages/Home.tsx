@@ -15,15 +15,14 @@ const Home = () => {
   const user = useCurrentUser();
   const { tool, closeTool } = useActiveTool();
 
-  // A tool only opens if the URL names a real one and the current user is allowed in.
-  // (guards against someone pasting a link to a room they can't enter)
+  // tool only opens if the URL exists + current user is allowed
   const openTool =
     tool && user && canAccess(user.role, tool.minRole) ? tool : null;
 
   return (
     <>
       <Menu />
-      <main className={isFullscreen ? "fullscreen" : undefined}>
+      <main className={`app-main ${isFullscreen ? "fullscreen" : undefined}`}>
         <Suspense fallback={<div className="house-backdrop" />}>
           <HouseBackdrop />
         </Suspense>

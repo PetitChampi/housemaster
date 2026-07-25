@@ -54,7 +54,7 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    main {
+    .app-main {
       position: relative;
       height: 100vh;
       overflow: hidden;

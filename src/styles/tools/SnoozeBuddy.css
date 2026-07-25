@@ -309,7 +309,6 @@
     }
     .modal-close {
       color: var(--sb-text-muted);
-      transition: color var(--transition-fast);
       &:hover {
         color: var(--sb-text);
       }
