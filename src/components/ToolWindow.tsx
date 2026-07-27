@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconMaximize, IconMinimize, IconX } from "@tabler/icons-react";
 import { useUiStore } from "@/store/uiStore";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import type { ToolDef } from "@/tools/registry";
 
 interface ToolWindowProps {
@@ -61,7 +62,9 @@ const ToolWindow = ({ tool, onClose }: ToolWindowProps) => {
         </button>
       </div>
       <div className="tool-content">
-        <Tool />
+        <ErrorBoundary label={tool.title}>
+          <Tool />
+        </ErrorBoundary>
       </div>
     </div>
   );

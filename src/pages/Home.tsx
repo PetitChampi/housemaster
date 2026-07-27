@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import Menu from "@/components/Menu";
 import ToolWindow from "@/components/ToolWindow";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { useUiStore } from "@/store/uiStore";
 import { useCurrentUser } from "@/store/authStore";
 import { useActiveTool } from "@/tools/useActiveTool";
@@ -23,9 +24,12 @@ const Home = () => {
     <>
       <Menu />
       <main className={`app-main ${isFullscreen ? "fullscreen" : undefined}`}>
-        <Suspense fallback={<div className="house-backdrop" />}>
-          <HouseBackdrop />
-        </Suspense>
+        <img className="app-brand" src="/img/logos/logo-abridged.svg" alt="housemaster" />
+        <ErrorBoundary label="house view">
+          <Suspense fallback={<div className="house-backdrop" />}>
+            <HouseBackdrop />
+          </Suspense>
+        </ErrorBoundary>
         {openTool && (
           <ToolWindow key={openTool.id} tool={openTool} onClose={closeTool} />
         )}

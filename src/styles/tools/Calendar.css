@@ -50,11 +50,14 @@
     width: 34px;
     height: 34px;
     border-radius: var(--radius-full);
+    border: 1px solid var(--cal-line);
     color: var(--cal-text-muted);
-    transition: background-color var(--transition-fast), color var(--transition-fast);
+    background-color: var(--cal-surface);
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
     &:hover:not(:disabled) {
       background-color: var(--cal-accent-6);
       color: var(--cal-accent-1);
+      border-color: var(--cal-accent-4)
     }
     &:disabled {
       opacity: 0.4;
@@ -132,16 +135,16 @@
         white-space: nowrap;
       }
     }
-    .cal-arrows {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-    }
     .cal-topbar-end {
       display: flex;
       align-items: center;
       gap: var(--spacing-md);
     }
+  }
+  .cal-arrows {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
   }
 
   .cal-viewpicker {
@@ -188,7 +191,6 @@
         &.is-active {
           background-color: var(--cal-accent-5);
           color: var(--cal-accent-1);
-          font-weight: var(--font-weight-semibold);
         }
       }
     }
@@ -288,6 +290,7 @@
           padding: 0;
           list-style: none;
           .cal-calendar-item {
+            position: relative;
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
@@ -356,6 +359,9 @@
         &.is-today .cal-month-daynum {
           background-color: var(--cal-accent-2);
           color: white;
+          &:hover {
+            background-color: var(--cal-accent-3);
+          }
         }
         .cal-month-daynum {
           align-self: flex-start;
@@ -442,6 +448,9 @@
         transition: color var(--transition-fast);
         &:hover {
           color: var(--cal-text);
+          .cal-col-daynum {
+            background-color: var(--cal-accent-5);
+          }
         }
         .cal-col-weekday {
           font-size: var(--font-size-xs);
@@ -451,16 +460,17 @@
         .cal-col-daynum {
           font-size: var(--font-size-xl);
           font-weight: var(--font-weight-medium);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: var(--radius-full);
+          transition: background-color var(--transition-fast), color var(--transition-fast);
         }
         &.is-today {
           color: var(--cal-accent-1);
           .cal-col-daynum {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-full);
             background-color: var(--cal-accent-2);
             color: white;
           }

@@ -12,11 +12,8 @@
   font-family: var(--font-family-base);
   /* color-scheme: light dark; */
   color: var(--colour-grey-cold-1);
-  background-color: var(--colour-grey-warm-4);
-  /* Switch to id 378 to test dark bg */
-  background-image: url("https://picsum.photos/id/448/2000/1000");
-  background-position: center;
-  background-size: cover;
+  /* Blank canvas for now (3D backdrop of the house exterior later) */
+  background-color: var(--colour-grey-warm-5);
   interpolate-size: allow-keywords;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -58,6 +55,16 @@ body {
       position: relative;
       height: 100vh;
       overflow: hidden;
+      .app-brand {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        height: 40px;
+        width: auto;
+        z-index: var(--z-fixed);
+        pointer-events: none;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+      }
       .house-backdrop {
         position: absolute;
         inset: 0;
