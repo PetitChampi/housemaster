@@ -20,7 +20,7 @@ The menu mirrors the planned layout of the house. Each room exposes one or more 
 | Kitchen     | Grocery manager                |
 | Bathroom    | Quote of the day               |
 | Bedroom     | Snooze buddy (relaxing video and podcase index) |
-| Study       | Accounting links, Kanban board   |
+| Study       | Accounting hub, Kanban board     |
 | Hobby room  | Craft log, Travel log          |
 
 Some tools currently embed an external page in an iframe (the grocery manager is one) as a stand-in until an eventual native version exists. Ultimately, I want the current grocery app, which currently exists as its own separately hosted app, to be accessible within Housemaster. I'll work out how that'll look like later down the line.

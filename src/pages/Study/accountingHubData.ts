@@ -17,10 +17,10 @@ export interface AccountingLink {
   id: string;
   name: string;
   url: string;
-  icon?: string;
+  icon: string;
 }
 
-// optional per-link icon, as shown in the modal icon grid when creating a new link
+// per-link icon, as shown in the modal icon grid when creating a new link
 export const linkIcons: { key: string; Icon: Icon }[] = [
   { key: "file-plus", Icon: IconFilePlus },
   { key: "file-dollar", Icon: IconFileDollar },
@@ -35,6 +35,8 @@ export const linkIcons: { key: string; Icon: Icon }[] = [
   { key: "mail", Icon: IconMail },
 ];
 
+export const defaultLinkIcon = linkIcons[0].key;
+
 export const iconByKey: Record<string, Icon> = Object.fromEntries(
   linkIcons.map(({ key, Icon }) => [key, Icon])
 );
@@ -43,6 +45,11 @@ export const iconByKey: Record<string, Icon> = Object.fromEntries(
 export const initialLinks: AccountingLink[] = [
   { id: "declare-expenses", name: "Declare expenses", url: "https://www.xero.com", icon: "file-plus" },
   { id: "reconcile-expenses", name: "Reconcile expenses", url: "https://www.xero.com", icon: "transfer" },
-  { id: "xero-invoices", name: "Xero invoices", url: "https://www.xero.com", icon: "file-dollar" },
-  { id: "accounts-mailbox", name: "Accounts mailbox", url: "https://mail.google.com" },
+  { id: "accounts-mailbox", name: "Accounts mailbox", url: "https://mail.google.com", icon: "mail" },
+  {
+    id: "software-invoices",
+    name: "Accounting software invoices",
+    url: "https://www.xero.com",
+    icon: "file-dollar",
+  },
 ];

@@ -2,18 +2,18 @@ import { useState } from "react";
 import { IconCalculator, IconPlus, IconMinus } from "@tabler/icons-react";
 import { useCurrentUser } from "@/store/authStore";
 import { canAccess } from "@/lib/roles";
-import { faviconUrl } from "@/lib/favicon";
 import { useExitTransition } from "@/lib/useExitTransition";
-import { LinkFormModal, ConfirmDeleteLinkModal } from "@/pages/Study/AccountingLinksModals";
-import { initialLinks, iconByKey, type AccountingLink } from "@/pages/Study/accountingLinksData";
-import "@/styles/tools/AccountingLinks.css";
+import { LinkFormModal, ConfirmDeleteLinkModal } from "@/pages/Study/AccountingHubModals";
+import { initialLinks, iconByKey, type AccountingLink } from "@/pages/Study/accountingHubData";
+import boredBelinda from "@/assets/bored-belinda.svg";
+import "@/styles/tools/AccountingHub.css";
 
 type ModalState =
   | { type: "add" }
   | { type: "edit"; link: AccountingLink }
   | { type: "delete"; link: AccountingLink };
 
-const AccountingLinks = () => {
+const AccountingHub = () => {
   const user = useCurrentUser();
   const isAdmin = user ? canAccess(user.role, "ADMIN") : false;
 
@@ -44,20 +44,22 @@ const AccountingLinks = () => {
   };
 
   return (
-    <div className="accounting-links">
-      <div className="al-body">
-        <header className="al-title">
-          <IconCalculator size={36} stroke={1} className="al-title-icon" />
-          <h1>Accounting quick links</h1>
+    <div className="accounting-hub">
+      <div className="ah-body">
+        <header className="ah-title">
+          <IconCalculator size={36} stroke={1.5} className="ah-title-icon" aria-hidden />
+          <h1>Accounting hub</h1>
+          <IconCalculator size={36} stroke={1.5} className="ah-title-icon" aria-hidden />
         </header>
-        <div className="al-links">
+        <p className="ah-subtitle">Yay, admin time! We all love a good bookkeeping session.</p>
+        <img className="ah-illustration" src={boredBelinda} alt="" />
+        <div className="ah-links">
           {links.map((link) => {
-            const LinkIcon = link.icon ? iconByKey[link.icon] : null;
-            const favicon = faviconUrl(link.url);
+            const LinkIcon = iconByKey[link.icon];
             return (
-              <div className="al-link" key={link.id}>
+              <div className="ah-link" key={link.id}>
                 <a
-                  className="al-link-pill"
+                  className="ah-link-pill"
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -70,13 +72,14 @@ const AccountingLinks = () => {
                       : undefined
                   }
                 >
-                  <span className="al-link-avatar">{favicon && <img src={favicon} alt="" />}</span>
-                  {LinkIcon && <LinkIcon size={22} stroke={1} className="al-link-icon" />}
-                  <span className="al-link-name">{link.name}</span>
+                  <span className="ah-link-medallion">
+                    {LinkIcon && <LinkIcon size={22} stroke={1} />}
+                  </span>
+                  <span className="ah-link-name">{link.name}</span>
                 </a>
                 {editing && (
                   <button
-                    className="al-link-remove"
+                    className="ah-link-remove"
                     aria-label={`Delete ${link.name}`}
                     onClick={() => setModal({ type: "delete", link })}
                   >
@@ -88,11 +91,11 @@ const AccountingLinks = () => {
           })}
         </div>
         {showControls && (
-          <div className="al-controls">
-            <button className="al-btn" onClick={() => setEditing((value) => !value)}>
+          <div className="ah-controls">
+            <button className="ah-btn" onClick={() => setEditing((value) => !value)}>
               {editing ? "Finish editing" : "Edit links"}
             </button>
-            <button className="al-btn al-btn-strong" onClick={() => setModal({ type: "add" })}>
+            <button className="ah-btn ah-btn-strong" onClick={() => setModal({ type: "add" })}>
               <IconPlus size={18} stroke={1.5} />
               New link
             </button>
@@ -100,8 +103,8 @@ const AccountingLinks = () => {
         )}
       </div>
       {isAdmin && (
-        <div className="al-footer">
-          <button className="al-toggle" onClick={toggleControls}>
+        <div className="ah-footer">
+          <button className="ah-toggle" onClick={toggleControls}>
             {controlsShown ? "Hide controls" : "Show controls"}
           </button>
         </div>
@@ -147,4 +150,4 @@ const AccountingLinks = () => {
   );
 };
 
-export default AccountingLinks;
+export default AccountingHub;

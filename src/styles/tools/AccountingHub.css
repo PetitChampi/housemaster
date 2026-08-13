@@ -1,13 +1,14 @@
-.accounting-links {
-  --al-bg: #2c313a;
-  --al-surface: #3d4450;
-  --al-surface-strong: #49515e;
-  --al-modal-bg: #363c45;
-  --al-input-bg: #2a2f38;
-  --al-accent: var(--colour-grey-cold-3);
-  --al-border: rgba(255, 255, 255, 0.18);
-  --al-text: var(--colour-grey-cold-6);
-  --al-text-muted: var(--colour-grey-cold-4);
+.accounting-hub {
+  --ah-gold: #ffb66d;
+  --ah-bg: var(--colour-grey-cold-1);
+  --ah-surface: var(--colour-grey-cold-2);
+  --ah-surface-strong: #56657a;
+  --ah-modal-bg: #363c45;
+  --ah-input-bg: #2a2f38;
+  --ah-accent: var(--colour-grey-cold-3);
+  --ah-border: rgba(255, 255, 255, 0.18);
+  --ah-text: var(--colour-grey-cold-6);
+  --ah-text-muted: var(--colour-grey-cold-4);
   --modal-overlay-colour: var(--colour-grey-cold-3);
 
   position: relative;
@@ -15,73 +16,84 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: var(--al-bg);
-  color: var(--al-text);
+  background-color: var(--ah-bg);
+  color: var(--ah-text);
   font-family: "Bai Jamjuree", sans-serif;
-  .al-body {
+  .ah-body {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-xl);
+    padding: 20px var(--spacing-lg) var(--spacing-xl);
     /* fades the bottom edge of body into the footer once content reaches it */
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.25rem), transparent);
     mask-image: linear-gradient(to bottom, #000 calc(100% - 2.25rem), transparent);
-    .al-title {
+    .ah-title {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: var(--spacing-sm);
-      margin: var(--spacing-sm) 0 var(--spacing-2xl);
+      gap: 12px;
+      padding: 10px 0 20px;
       color: var(--colour-grey-cold-5);
+      .ah-title-icon {
+        flex-shrink: 0;
+        color: var(--colour-grey-cold-3);
+      }
       h1 {
         margin: 0;
-        font-size: 2rem;
+        font-size: 2.25rem;
         font-weight: var(--font-weight-medium);
         line-height: 1.2;
       }
     }
-    .al-links {
+    .ah-subtitle {
+      margin: 0;
+      color: var(--ah-text-muted);
+      font-size: var(--font-size-base);
+      line-height: 1.2;
+      text-align: center;
+    }
+    .ah-illustration {
+      display: block;
+      width: 100%;
+      max-width: 600px;
+      margin: 50px auto 80px;
+    }
+    .ah-links {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: var(--spacing-md);
-      .al-link {
+      gap: 20px 10px;
+      .ah-link {
         position: relative;
-        .al-link-pill {
+        .ah-link-pill {
           display: inline-flex;
           align-items: center;
-          gap: var(--spacing-sm);
+          gap: 12px;
           padding: 5px 20px 5px 5px;
           border-radius: var(--radius-full);
-          background-color: var(--al-surface);
-          color: var(--al-text);
+          background-color: var(--ah-surface);
+          color: var(--ah-text);
           text-align: left;
           transition: background-color var(--transition-fast);
           &:hover {
-            background-color: var(--al-surface-strong);
+            background-color: var(--ah-surface-strong);
           }
-          .al-link-avatar {
+          .ah-link-medallion {
             display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
             width: 40px;
             height: 40px;
-            margin-right: var(--spacing-sm);
+            border: 1px solid color-mix(in srgb, var(--ah-gold) 30%, transparent);
             border-radius: var(--radius-full);
-            overflow: hidden;
-            background-color: white;
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-            }
+            background-color: color-mix(in srgb, var(--ah-gold) 20%, transparent);
+            color: var(--ah-gold);
           }
-          .al-link-icon {
-            color: var(--al-text-muted);
-          }
-          .al-link-name {
-            font-size: var(--font-size-base);
+          .ah-link-name {
+            font-size: var(--font-size-sm);
           }
         }
-        .al-link-remove {
+        .ah-link-remove {
           position: absolute;
           top: -6px;
           right: -3px;
@@ -101,126 +113,126 @@
         }
       }
     }
-    .al-controls {
+    .ah-controls {
       display: flex;
       gap: var(--spacing-md);
       margin-top: var(--spacing-2xl);
-      .al-btn {
+      .ah-btn {
         flex: 1;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: var(--spacing-sm);
         padding: 10px 20px;
-        border: 1px solid var(--al-border);
+        border: 1px solid var(--ah-border);
         border-radius: var(--radius-full);
-        color: var(--al-text-muted);
+        color: var(--ah-text-muted);
         font-size: var(--font-size-sm);
         transition: background-color var(--transition-fast), border-color var(--transition-fast);
         &:hover {
           background-color: color-mix(in srgb, white 6%, transparent);
         }
-        &.al-btn-strong {
-          color: var(--al-text);
-          background-color: var(--al-surface);
+        &.ah-btn-strong {
+          color: var(--ah-text);
+          background-color: var(--ah-surface);
           border-color: transparent;
           &:hover {
-            background-color: var(--al-surface-strong);
+            background-color: var(--ah-surface-strong);
           }
         }
       }
     }
   }
-  .al-footer {
+  .ah-footer {
     display: flex;
     justify-content: center;
     padding: var(--spacing-md) var(--spacing-lg);
-    .al-toggle {
+    .ah-toggle {
       padding: 5px 20px;
-      border: 1px solid var(--al-border);
+      border: 1px solid var(--ah-border);
       border-radius: var(--radius-full);
-      color: var(--al-text-muted);
+      color: var(--ah-text-muted);
       font-size: var(--font-size-xs);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       transition: color var(--transition-fast), border-color var(--transition-fast);
       &:hover {
-        color: var(--al-text);
-        border-color: var(--al-text-muted);
+        color: var(--ah-text);
+        border-color: var(--ah-text-muted);
       }
     }
   }
-  .al-modal {
-    background-color: var(--al-modal-bg);
-    color: var(--al-text);
+  .ah-modal {
+    background-color: var(--ah-modal-bg);
+    color: var(--ah-text);
     .modal-title {
-      color: var(--al-text);
+      color: var(--ah-text);
     }
     .modal-close {
-      color: var(--al-text-muted);
+      color: var(--ah-text-muted);
       &:hover {
-        color: var(--al-text);
+        color: var(--ah-text);
       }
     }
-    .al-form {
+    .ah-form {
       display: flex;
       flex-direction: column;
       gap: var(--spacing-md);
-      .al-field {
+      .ah-field {
         display: flex;
         flex-direction: column;
         gap: 6px;
         label,
-        .al-field-label {
+        .ah-field-label {
           font-size: var(--font-size-sm);
-          color: var(--al-text-muted);
+          color: var(--ah-text-muted);
         }
-        .al-input {
+        .ah-input {
           width: 100%;
           padding: 11px 18px;
-          border: 1px solid var(--al-border);
+          border: 1px solid var(--ah-border);
           border-radius: var(--radius-full);
-          background-color: var(--al-input-bg);
-          color: var(--al-text);
+          background-color: var(--ah-input-bg);
+          color: var(--ah-text);
           transition: border-color var(--transition-fast);
           &:focus {
             outline: none;
-            border-color: var(--al-accent);
+            border-color: var(--ah-accent);
           }
         }
-        .al-icon-grid {
+        .ah-icon-grid {
           margin-top: 5px;
           display: flex;
           flex-wrap: wrap;
           gap: var(--spacing-sm);
-          .al-icon-option {
+          .ah-icon-option {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 42px;
             height: 42px;
-            border: 1px solid var(--al-border);
+            border: 1px solid var(--ah-border);
             border-radius: var(--radius-md);
-            color: var(--al-text-muted);
+            color: var(--ah-text-muted);
             transition: all var(--transition-fast);
             &:hover {
-              color: var(--al-text);
+              color: var(--ah-text);
             }
             &.is-selected {
-              border-color: var(--al-accent);
-              color: var(--al-text);
-              background-color: color-mix(in srgb, white 6%, transparent);
+              border-color: color-mix(in srgb, var(--ah-gold) 30%, transparent);
+              color: var(--ah-gold);
+              background-color: color-mix(in srgb, var(--ah-gold) 20%, transparent);
             }
           }
         }
       }
     }
-    .al-confirm-text {
+    .ah-confirm-text {
       margin: 0;
-      color: var(--al-text-muted);
+      color: var(--ah-text-muted);
       line-height: 1.5;
     }
-    .al-modal-actions {
+    .ah-modal-actions {
       display: flex;
       gap: var(--spacing-md);
       margin-top: var(--spacing-lg);
@@ -232,15 +244,15 @@
         font-weight: var(--font-weight-medium);
         transition: background-color var(--transition-fast), opacity var(--transition-fast);
       }
-      .al-cancel {
-        border: 1px solid var(--al-border);
-        color: var(--al-text);
+      .ah-cancel {
+        border: 1px solid var(--ah-border);
+        color: var(--ah-text);
         background-color: transparent;
         &:hover {
           background-color: color-mix(in srgb, white 6%, transparent);
         }
       }
-      .al-submit {
+      .ah-submit {
         border: none;
         background-color: var(--colour-grey-cold-4);
         color: var(--colour-grey-cold-1);
@@ -252,7 +264,7 @@
           cursor: not-allowed;
         }
       }
-      .al-delete {
+      .ah-delete {
         border: none;
         background-color: var(--colour-error);
         color: white;

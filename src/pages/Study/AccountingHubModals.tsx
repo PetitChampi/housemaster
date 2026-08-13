@@ -1,7 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
-import { IconBan } from "@tabler/icons-react";
 import Modal from "@/components/Modal";
-import { linkIcons, type AccountingLink } from "@/pages/Study/accountingLinksData";
+import { linkIcons, defaultLinkIcon, type AccountingLink } from "@/pages/Study/accountingHubData";
 
 type LinkFormData = Omit<AccountingLink, "id">;
 
@@ -27,7 +26,7 @@ export const LinkFormModal = ({
 }: LinkFormModalProps) => {
   const [name, setName] = useState(initial?.name ?? "");
   const [url, setUrl] = useState(initial?.url ?? "");
-  const [icon, setIcon] = useState<string | undefined>(initial?.icon);
+  const [icon, setIcon] = useState(initial?.icon ?? defaultLinkIcon);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -39,43 +38,35 @@ export const LinkFormModal = ({
   const submitLabel = mode === "add" ? "Add link" : "Edit link";
 
   return (
-    <Modal title={title} onClose={onClose} className="al-modal" isClosing={isClosing} onClosed={onClosed}>
-      <form className="al-form" onSubmit={handleSubmit}>
-        <div className="al-field">
-          <label htmlFor="al-name">Link name</label>
+    <Modal title={title} onClose={onClose} className="ah-modal" isClosing={isClosing} onClosed={onClosed}>
+      <form className="ah-form" onSubmit={handleSubmit}>
+        <div className="ah-field">
+          <label htmlFor="ah-name">Link name</label>
           <input
-            id="al-name"
-            className="al-input"
+            id="ah-name"
+            className="ah-input"
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoFocus
           />
         </div>
-        <div className="al-field">
-          <label htmlFor="al-url">Link URL</label>
+        <div className="ah-field">
+          <label htmlFor="ah-url">Link URL</label>
           <input
-            id="al-url"
-            className="al-input"
+            id="ah-url"
+            className="ah-input"
             value={url}
             onChange={(event) => setUrl(event.target.value)}
           />
         </div>
-        <div className="al-field">
-          <span className="al-field-label">Icon (optional)</span>
-          <div className="al-icon-grid">
-            <button
-              type="button"
-              className={`al-icon-option ${icon ? "" : "is-selected"}`}
-              aria-label="No icon"
-              onClick={() => setIcon(undefined)}
-            >
-              <IconBan size={22} stroke={1} />
-            </button>
+        <div className="ah-field">
+          <span className="ah-field-label">Icon</span>
+          <div className="ah-icon-grid">
             {linkIcons.map(({ key, Icon }) => (
               <button
                 type="button"
                 key={key}
-                className={`al-icon-option ${icon === key ? "is-selected" : ""}`}
+                className={`ah-icon-option ${icon === key ? "is-selected" : ""}`}
                 aria-label={key}
                 onClick={() => setIcon(key)}
               >
@@ -84,11 +75,11 @@ export const LinkFormModal = ({
             ))}
           </div>
         </div>
-        <div className="al-modal-actions">
-          <button type="button" className="al-cancel" onClick={onClose}>
+        <div className="ah-modal-actions">
+          <button type="button" className="ah-cancel" onClick={onClose}>
             Cancel
           </button>
-          <button type="submit" className="al-submit" disabled={!name.trim() || !url.trim()}>
+          <button type="submit" className="ah-submit" disabled={!name.trim() || !url.trim()}>
             {submitLabel}
           </button>
         </div>
@@ -110,15 +101,15 @@ export const ConfirmDeleteLinkModal = ({
   isClosing,
   onClosed,
 }: ConfirmDeleteLinkModalProps) => (
-  <Modal title="Delete link" onClose={onClose} className="al-modal" isClosing={isClosing} onClosed={onClosed}>
-    <p className="al-confirm-text">
+  <Modal title="Delete link" onClose={onClose} className="ah-modal" isClosing={isClosing} onClosed={onClosed}>
+    <p className="ah-confirm-text">
       Are you sure you want to remove &ldquo;{linkName}&rdquo;? This can&rsquo;t be undone.
     </p>
-    <div className="al-modal-actions">
-      <button type="button" className="al-cancel" onClick={onClose}>
+    <div className="ah-modal-actions">
+      <button type="button" className="ah-cancel" onClick={onClose}>
         Cancel
       </button>
-      <button type="button" className="al-delete" onClick={onConfirm}>
+      <button type="button" className="ah-delete" onClick={onConfirm}>
         Delete link
       </button>
     </div>

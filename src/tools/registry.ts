@@ -15,7 +15,7 @@ import Calendar from "@/pages/LivingRoom/Calendar";
 import GroceryManager from "@/pages/Kitchen/GroceryManager";
 import QuoteOfTheDay from "@/pages/Bathroom/QuoteOfTheDay";
 import SnoozeBuddy from "@/pages/Bedroom/SnoozeBuddy";
-import AccountingLinks from "@/pages/Study/AccountingLinks";
+import AccountingHub from "@/pages/Study/AccountingHub";
 import KanbanBoard from "@/pages/Study/KanbanBoard";
 import CraftLog from "@/pages/HobbyRoom/CraftLog";
 import TravelLog from "@/pages/HobbyRoom/TravelLog";
@@ -111,9 +111,9 @@ const rawRooms: RawRoom[] = [
     Icon: IconBriefcase,
     tools: [
       {
-        slug: "accounting-links",
-        title: "Accounting links",
-        Component: AccountingLinks,
+        slug: "accounting-hub",
+        title: "Accounting hub",
+        Component: AccountingHub,
         minRole: "ADMIN",
         theme: { mode: "dark", temperature: "cold" },
       },
