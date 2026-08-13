@@ -1,0 +1,678 @@
+.travel-log {
+  --tl-paper: #F7F1E6;
+  --tl-surface: #FFFFFF;
+  --tl-line: #E3D9C8;
+  --tl-sea: #DCE8E7;
+  --tl-land: #F1E7D5;
+  --tl-land-line: #C6B79C;
+  --tl-accent-1: #7A3517;
+  --tl-accent-2: #B4541F;
+  --tl-accent-3: #D98E5F;
+  --tl-accent-4: #EFC7A8;
+  --tl-accent-5: #FAE7D8;
+  --tl-accent-6: #FDF5EE;
+  --tl-ink-1: #3B4A6B;
+  --tl-ink-2: #5A6C9B;
+  --tl-ink-3: #8D9BC0;
+  --tl-ink-4: #C4CDE2;
+  --tl-ink-5: #E8ECF5;
+  --tl-text: var(--colour-grey-warm-1);
+  --tl-text-muted: var(--colour-grey-warm-3);
+  --tl-panel-top: 20px;
+  --tl-panel-left: 20px;
+  --tl-panel-width: 320px;
+
+  container-type: inline-size;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--tl-paper);
+  color: var(--tl-text);
+  font-family: "Albert Sans", sans-serif;
+
+  .tl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: 9px 18px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+  .tl-btn-strong {
+    background-color: var(--tl-accent-2);
+    color: white;
+    &:hover:not(:disabled) {
+      background-color: var(--tl-accent-1);
+    }
+  }
+  .tl-btn-ghost {
+    border: 1px solid var(--tl-line);
+    color: var(--tl-text);
+    &:hover:not(:disabled) {
+      background-color: var(--tl-accent-6);
+      border-color: var(--tl-accent-4);
+    }
+  }
+
+  /* Shared by the map and the timeline */
+  .tl-pin {
+    position: absolute;
+    z-index: 1;
+    width: 22px;
+    height: 22px;
+    /* Lifts the shape so the point of the teardrop lands on the coordinate */
+    margin: -27px 0 0 -11px;
+    pointer-events: auto;
+    transform-origin: 50% 130%;
+    transition: transform var(--transition-fast);
+    .tl-pin-shape {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 2.5px solid var(--tl-surface);
+      border-radius: 50% 50% 50% 0;
+      background-color: var(--tl-accent-2);
+      box-shadow: 0 2px 5px -1px color-mix(in srgb, var(--tl-accent-1) 45%, transparent);
+      rotate: -45deg;
+      transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    &:hover,
+    &:focus-visible {
+      z-index: 3;
+      transform: scale(1.18);
+    }
+    &.is-selected {
+      z-index: 2;
+      .tl-pin-shape {
+        background-color: var(--tl-accent-1);
+        box-shadow: 0 0 0 5px color-mix(in srgb, var(--tl-accent-2) 26%, transparent);
+      }
+    }
+    &.tl-pin--hanging {
+      margin: 5px 0 0 -11px;
+      transform-origin: 50% -30%;
+      .tl-pin-shape {
+        rotate: 135deg;
+      }
+    }
+    .tl-pin-tip {
+      position: absolute;
+      bottom: calc(100% + 13px);
+      left: 50%;
+      z-index: var(--z-tooltip);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      width: max-content;
+      max-width: 190px;
+      padding: 7px 12px;
+      border-radius: var(--radius-md);
+      background-color: var(--tl-ink-1);
+      color: var(--tl-paper);
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      translate: -50% 0;
+      transition: opacity var(--transition-fast), visibility var(--transition-fast);
+      &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        width: 9px;
+        height: 9px;
+        margin: -5px 0 0 -4.5px;
+        border-radius: 2px;
+        background-color: inherit;
+        rotate: 45deg;
+      }
+      .tl-pin-tip-name {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        line-height: 1.3;
+      }
+      .tl-pin-tip-when {
+        color: var(--tl-ink-4);
+        font-size: var(--font-size-xs);
+        line-height: 1.3;
+      }
+    }
+    /* The tl markers hang below the line, so their label drops to the bottom instead of the top */
+    &.tl-pin--hanging .tl-pin-tip {
+      top: calc(100% + 13px);
+      bottom: auto;
+      &::after {
+        top: auto;
+        bottom: 100%;
+        margin: 0 0 -5px -5px;
+      }
+    }
+    &:focus-visible .tl-pin-tip {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  /* Real hover only, so a tap on a touch screen doesn't leave the label stuck open */
+  @media (hover: hover) {
+    .tl-pin:hover .tl-pin-tip {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .tl-stage {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tl-map {
+    position: absolute;
+    inset: 0;
+    background-color: var(--tl-sea);
+    cursor: grab;
+    /* Hands the pan gesture to the pointer handlers rather than to the browser's scrolling */
+    touch-action: none;
+    &.is-panning {
+      cursor: grabbing;
+    }
+    .tl-map-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      .tl-map-land {
+        fill: var(--tl-land);
+        stroke: var(--tl-land-line);
+        stroke-width: 1.5;
+        stroke-linejoin: round;
+      }
+    }
+    .tl-pins {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .tl-map-controls {
+      position: absolute;
+      right: var(--spacing-md);
+      bottom: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      .tl-map-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--tl-line);
+        border-radius: var(--radius-full);
+        background-color: var(--tl-surface);
+        color: var(--tl-accent-1);
+        box-shadow: var(--shadow-md-warm);
+        transition: background-color var(--transition-fast);
+        &:hover {
+          background-color: var(--tl-accent-5);
+        }
+      }
+    }
+  }
+
+  .tl-timeline-scroll {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* Keeps the track clear of the panel lying across the bottom */
+    padding-bottom: 250px;
+    .tl-track {
+      --tl-axis-y: 172px;
+
+      position: relative;
+      flex: none;
+      height: 264px;
+      .tl-scenery {
+        position: absolute;
+        inset: 0;
+        color: var(--tl-ink-2);
+        .tl-scenery-piece {
+          position: absolute;
+          bottom: calc(100% - var(--tl-axis-y));
+          transform-origin: bottom left;
+          svg {
+            display: block;
+          }
+        }
+        .tl-scenery-hiker {
+          position: absolute;
+          right: 24px;
+          bottom: calc(100% - var(--tl-axis-y));
+          color: var(--tl-accent-2);
+          svg {
+            display: block;
+          }
+        }
+      }
+      .tl-axis {
+        position: absolute;
+        inset: 0;
+        color: var(--tl-ink-2);
+        .tl-axis-line {
+          position: absolute;
+          top: var(--tl-axis-y);
+          height: 4px;
+          border-radius: var(--radius-full);
+          background-color: currentColor;
+        }
+        .tl-axis-dot {
+          position: absolute;
+          top: calc(var(--tl-axis-y) - 4px);
+          width: 12px;
+          height: 12px;
+          margin-left: -6px;
+          border: 3px solid currentColor;
+          border-radius: var(--radius-full);
+          background-color: var(--tl-paper);
+        }
+        .tl-axis-arrow {
+          position: absolute;
+          top: calc(var(--tl-axis-y) - 7px);
+          width: 0;
+          height: 0;
+          border-top: 9px solid transparent;
+          border-bottom: 9px solid transparent;
+          border-left: 16px solid currentColor;
+        }
+      }
+      .tl-axis-year {
+        position: absolute;
+        top: calc(var(--tl-axis-y) + 52px);
+        margin: 0;
+        color: var(--tl-text-muted);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        font-variant-numeric: tabular-nums;
+        translate: -50% 0;
+        &.tl-axis-year--end {
+          translate: 50% 0;
+        }
+      }
+      .tl-marks {
+        position: absolute;
+        top: var(--tl-axis-y);
+        right: 0;
+        left: 0;
+        height: 0;
+      }
+    }
+  }
+
+  .tl-tabs {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 4;
+    display: flex;
+    gap: 3px;
+    padding: 4px;
+    border: 1px solid var(--tl-line);
+    border-radius: var(--radius-full);
+    background-color: color-mix(in srgb, var(--tl-surface) 85%, transparent);
+    backdrop-filter: blur(6px);
+    box-shadow: var(--shadow-md-warm);
+    .tl-tab {
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      color: var(--tl-accent-2);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+      &:hover:not(.is-active) {
+        background-color: var(--tl-accent-6);
+      }
+      &.is-active {
+        background-color: var(--tl-accent-2);
+        color: white;
+      }
+    }
+  }
+
+  .tl-panel {
+    position: absolute;
+    z-index: 3;
+    border: 1px solid var(--tl-line);
+    border-radius: var(--radius-xl);
+    background-color: var(--tl-surface);
+    box-shadow: var(--shadow-lg);
+  }
+  .tl-panel--side {
+    top: var(--tl-panel-top);
+    left: var(--tl-panel-left);
+    width: var(--tl-panel-width);
+    max-height: calc(100% - var(--tl-panel-top) * 2);
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+    transition: transform var(--transition-base), opacity var(--transition-base);
+    &.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(calc(-100% - var(--tl-panel-left) - 12px));
+    }
+  }
+  .tl-panel--foot {
+    bottom: var(--spacing-lg);
+    left: 50%;
+    width: min(700px, calc(100cqw - var(--spacing-xl)));
+    padding: var(--spacing-md);
+    translate: -50% 0;
+  }
+
+  .tl-place {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    .tl-place-head {
+      /* Room for the close button overlapping the panel corner */
+      padding-right: 34px;
+      .tl-place-name {
+        margin: 0;
+        color: var(--tl-accent-1);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-semibold);
+        line-height: 1.2;
+      }
+      .tl-place-where {
+        margin: 3px 0 0;
+        color: var(--tl-text-muted);
+        font-size: var(--font-size-sm);
+      }
+      .tl-place-when {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: var(--spacing-sm) 0 0;
+        padding: 3px 12px 3px 9px;
+        border-radius: var(--radius-full);
+        background-color: var(--tl-accent-5);
+        color: var(--tl-accent-1);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+    .tl-place-figure {
+      margin: 0;
+      border-radius: var(--radius-lg);
+      background-color: var(--tl-accent-6);
+      overflow: hidden;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+    }
+    .tl-place-note {
+      margin: 0;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+    .tl-place-nav {
+      display: flex;
+      gap: var(--spacing-sm);
+      > * {
+        flex: 1;
+        padding: 9px 14px;
+        white-space: nowrap;
+      }
+    }
+  }
+  .tl-panel--foot .tl-place {
+    display: grid;
+    grid-template-areas: "img head" "img note" "img nav";
+    grid-template-columns: 210px 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--spacing-sm) var(--spacing-lg);
+    .tl-place-head {
+      grid-area: head;
+      padding-right: 0;
+    }
+    .tl-place-figure {
+      grid-area: img;
+      align-self: stretch;
+      img {
+        height: 100%;
+        aspect-ratio: auto;
+      }
+    }
+    .tl-place-note {
+      grid-area: note;
+    }
+    .tl-place-nav {
+      grid-area: nav;
+      justify-content: flex-end;
+      > * {
+        flex: 0 0 auto;
+      }
+    }
+  }
+
+  .tl-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    text-align: center;
+    .tl-welcome-art {
+      order: 2;
+      color: var(--tl-ink-2);
+      .tl-welcome-trail {
+        display: none;
+      }
+      .tl-welcome-hiker {
+        display: block;
+        width: 108px;
+        height: auto;
+      }
+    }
+    .tl-welcome-head {
+      order: 1;
+      padding-right: 26px;
+      .tl-welcome-title {
+        margin: 0;
+        color: var(--tl-accent-1);
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        line-height: 1.15;
+      }
+      .tl-welcome-blurb {
+        margin: var(--spacing-sm) 0 0;
+        color: var(--tl-text-muted);
+        font-size: 0.9375rem;
+        line-height: 1.55;
+      }
+    }
+    .tl-welcome-start {
+      order: 3;
+      align-self: stretch;
+      padding: 13px 24px;
+      font-size: var(--font-size-base);
+    }
+  }
+  .tl-panel--foot .tl-welcome {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xl);
+    min-height: 156px;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-lg);
+    text-align: left;
+    .tl-welcome-art {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      .tl-welcome-trail {
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        opacity: 0.4;
+      }
+      .tl-welcome-hiker {
+        position: absolute;
+        right: 34%;
+        bottom: 18px;
+        width: 76px;
+        color: var(--tl-accent-3);
+        opacity: 0.85;
+      }
+    }
+    .tl-welcome-head {
+      position: relative;
+      order: 1;
+      max-width: 58%;
+      padding-right: 0;
+      .tl-welcome-title {
+        font-size: var(--font-size-2xl);
+      }
+    }
+    .tl-welcome-start {
+      position: relative;
+      order: 2;
+      flex-shrink: 0;
+      align-self: center;
+    }
+  }
+
+  .tl-panel-toggle {
+    position: absolute;
+    top: var(--tl-panel-top);
+    left: var(--tl-panel-left);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    height: 42px;
+    padding: 0 11px;
+    border: 1px solid var(--tl-line);
+    border-radius: var(--radius-full);
+    background-color: var(--tl-surface);
+    color: var(--tl-accent-1);
+    box-shadow: var(--shadow-md-warm);
+    transition: transform var(--transition-base), background-color var(--transition-base),
+      border-color var(--transition-base), box-shadow var(--transition-base), color var(--transition-base);
+    &:hover {
+      background-color: var(--tl-accent-5);
+    }
+    .tl-panel-toggle-label {
+      width: max-content;
+      padding: 0 8px 0 5px;
+      overflow: hidden;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      transition: width var(--transition-base), padding var(--transition-base), opacity var(--transition-base);
+    }
+    .tl-panel-toggle-icon {
+      flex-shrink: 0;
+      rotate: 45deg;
+      transition: rotate var(--transition-base);
+    }
+    &.is-open {
+      border-color: transparent;
+      background-color: transparent;
+      color: var(--tl-text-muted);
+      box-shadow: none;
+      transform: translate(calc(var(--tl-panel-width) - 100% - 14px), 14px);
+      &:hover {
+        background-color: var(--tl-accent-5);
+        color: var(--tl-accent-1);
+      }
+      .tl-panel-toggle-label {
+        width: 0;
+        padding: 0;
+        opacity: 0;
+      }
+      .tl-panel-toggle-icon {
+        rotate: 0deg;
+      }
+    }
+  }
+}
+
+@container (max-width: 720px) {
+  .travel-log {
+    .tl-panel--side,
+    .tl-panel-toggle {
+      --tl-panel-width: min(300px, calc(100cqw - 40px));
+    }
+    .tl-panel--foot .tl-place {
+      grid-template-columns: 150px 1fr;
+      gap: var(--spacing-sm) var(--spacing-md);
+    }
+    .tl-panel--foot .tl-welcome {
+      .tl-welcome-head {
+        max-width: 100%;
+      }
+      .tl-welcome-hiker {
+        right: 8px;
+        opacity: 0.4;
+      }
+    }
+    .tl-timeline-scroll {
+      padding-bottom: 232px;
+    }
+  }
+}
+
+@container (max-width: 520px) {
+  .travel-log {
+    .tl-panel--side,
+    .tl-panel-toggle {
+      --tl-panel-top: 74px;
+    }
+    .tl-tabs .tl-tab {
+      padding: 8px 14px;
+    }
+    .tl-panel--side {
+      max-height: calc(100% - var(--tl-panel-top) - var(--spacing-md));
+    }
+    .tl-panel--foot {
+      bottom: var(--spacing-sm);
+      width: calc(100cqw - var(--spacing-md) * 2);
+      padding: var(--spacing-sm);
+      .tl-place {
+        grid-template-columns: 104px 1fr;
+        gap: 6px var(--spacing-sm);
+        .tl-place-head .tl-place-name {
+          font-size: var(--font-size-xl);
+        }
+        .tl-place-note {
+          font-size: var(--font-size-sm);
+        }
+      }
+      .tl-welcome {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        min-height: 0;
+        .tl-welcome-start {
+          align-self: stretch;
+        }
+      }
+    }
+  }
+}
