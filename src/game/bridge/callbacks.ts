@@ -7,4 +7,5 @@ export interface GameCallbacks {
   onPromptChange: (prompt: string | null) => void;
   // Whether the current user is allowed to open a tool (mirroring the menu and deep-link guards)
   canOpenTool: (toolId: string) => boolean;
+  onExitHouse: () => void;
 }

@@ -1,15 +1,18 @@
 import * as THREE from "three";
-import { CAMERA, INTERACTION, SCENE } from "@/game/config/constants";
+import { CAMERA, INTERACTION, SCENE, WALL } from "@/game/config/constants";
 import type { GameCallbacks } from "@/game/bridge/callbacks";
 import { Input } from "@/game/engine/Input";
 import { Loop } from "@/game/engine/Loop";
 import { Player } from "@/game/player/Player";
 import type { Vec2 } from "@/game/player/movement";
 import { World } from "@/game/world/World";
-import { SPAWN } from "@/game/world/layout";
+import { ENTRANCE, ROOMS, SPAWN, WALLS } from "@/game/world/layout";
+import { floorRegions } from "@/game/world/floors";
+import { fitDirectionalShadow } from "@/game/engine/shadows";
 import type { Interactable } from "@/game/world/Interactable";
 import { findNearest } from "@/game/interaction/proximity";
 import { pickInteractable } from "@/game/interaction/picking";
+import { clearTextureCache } from "@/game/world/textures";
 
 // Owns the renderer + isometric camera + simulation loop, lives entirely outside React
 // React boots one Engine into a container and later disposes it (everything 3D happens in here)
@@ -30,6 +33,7 @@ export class Engine {
   private readonly cameraTarget = new THREE.Vector3();
 
   private active = true;
+  private entranceArmed = true;
   private nearest: Interactable | null = null;
   private hovered: Interactable | null = null;
   private highlighted = new Set<Interactable>();
@@ -41,6 +45,10 @@ export class Engine {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(container.clientWidth, container.clientHeight);
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.NoToneMapping;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
@@ -52,9 +60,8 @@ export class Engine {
     this.applyCameraFrustum();
 
     this.addLights();
-    this.addFloor();
 
-    this.world = new World();
+    this.world = new World(this.renderer.capabilities.getMaxAnisotropy());
     this.scene.add(this.world.group);
 
     this.player = new Player(SPAWN);
@@ -102,32 +109,57 @@ export class Engine {
     this.renderer.domElement.removeEventListener("pointerdown", this.handlePointer);
     this.renderer.domElement.removeEventListener("pointermove", this.handlePointerMove);
     this.renderer.domElement.removeEventListener("pointerleave", this.handlePointerLeave);
+    const geometries = new Set<THREE.BufferGeometry>();
+    const materials = new Set<THREE.Material>();
+    const textures = new Set<THREE.Texture>();
     this.scene.traverse((object) => {
       if (object instanceof THREE.Mesh) {
-        object.geometry.dispose();
+        geometries.add(object.geometry);
+        if (object.customDepthMaterial) materials.add(object.customDepthMaterial);
+        if (object.customDistanceMaterial) materials.add(object.customDistanceMaterial);
         const material = object.material;
-        if (Array.isArray(material)) material.forEach((m) => m.dispose());
-        else material.dispose();
+        if (Array.isArray(material)) material.forEach((entry) => materials.add(entry));
+        else materials.add(material);
       }
     });
+    for (const material of materials) {
+      for (const value of Object.values(material)) {
+        if (value instanceof THREE.Texture) textures.add(value);
+      }
+      material.dispose();
+    }
+    textures.forEach((texture) => texture.dispose());
+    geometries.forEach((geometry) => geometry.dispose());
+    clearTextureCache();
     this.renderer.dispose();
     this.renderer.domElement.remove();
   }
 
   private step = (dt: number) => {
+    if (!this.active) return;
     const axis = this.input.getAxis();
     const direction: Vec2 = {
       x: this.right.x * axis.x + this.forward.x * axis.y,
       y: this.right.y * axis.x + this.forward.y * axis.y,
     };
     this.player.update(direction, dt, this.world.collide);
+    const position = this.player.worldPosition;
+    const entranceDistance = position.y - ENTRANCE.z;
+    if (entranceDistance > 1.1) this.entranceArmed = true;
+    if (this.entranceArmed && entranceDistance < 0.7 && Math.abs(position.x - ENTRANCE.x) < ENTRANCE.width / 2) {
+      this.entranceArmed = false;
+      this.setActive(false);
+      this.callbacks.onExitHouse();
+      return;
+    }
 
     this.setNearest(
       findNearest(
         this.player.worldPosition,
         this.world.interactables,
         INTERACTION.reach,
-        this.callbacks.canOpenTool
+        this.callbacks.canOpenTool,
+        this.world.interactionWalls
       )
     );
 
@@ -183,17 +215,20 @@ export class Engine {
   private handlePointerLeave = () => this.setHovered(null);
 
   private pick(event: PointerEvent): Interactable | null {
-    return pickInteractable(
+    const item = pickInteractable(
       event,
       this.renderer.domElement,
       this.camera,
       this.raycaster,
       this.world.interactableMeshes()
     );
+    return item && this.world.isAccessible(this.player.worldPosition, item) ? item : null;
   }
 
   private render = (frameTime: number) => {
     this.followPlayer(frameTime);
+    this.world.updateVisibility(this.player.worldPosition, frameTime);
+    for (const item of this.world.interactables) item.updateHighlight(frameTime);
     this.renderer.render(this.scene, this.camera);
   };
 
@@ -213,22 +248,20 @@ export class Engine {
   }
 
   private addLights() {
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const key = new THREE.DirectionalLight(0xffffff, 1.1);
-    key.position.set(12, 20, 8);
+    this.scene.add(new THREE.HemisphereLight(0xfffbf3, 0xb8afa6, 0.82));
+    const key = new THREE.DirectionalLight(0xfff4df, 1.55);
+    key.position.set(4, 8, 3);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.bias = -0.0005;
+    key.shadow.normalBias = 0.02;
+    const bounds = new THREE.Box3();
+    for (const rect of ROOMS.flatMap((room) => floorRegions(room, WALLS))) {
+      bounds.expandByPoint(new THREE.Vector3(rect.minX, 0, rect.minZ));
+      bounds.expandByPoint(new THREE.Vector3(rect.maxX, WALL.height, rect.maxZ));
+    }
+    fitDirectionalShadow(key, bounds);
     this.scene.add(key);
-  }
-
-  private addFloor() {
-    const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(SCENE.floorSize, SCENE.floorSize),
-      new THREE.MeshStandardMaterial({ color: SCENE.floorColour })
-    );
-    floor.rotation.x = -Math.PI / 2;
-    this.scene.add(floor);
-
-    const grid = new THREE.GridHelper(SCENE.floorSize, SCENE.floorSize, SCENE.gridColour, SCENE.gridColour);
-    this.scene.add(grid);
   }
 
   private applyCameraFrustum() {

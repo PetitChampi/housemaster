@@ -63,7 +63,7 @@ body {
         width: auto;
         z-index: var(--z-fixed);
         pointer-events: none;
-        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+        filter: drop-shadow(0 1px 3px rgba(63, 59, 59, 0.16));
       }
       .house-backdrop {
         position: absolute;
@@ -85,9 +85,56 @@ body {
             margin: 0;
             padding: var(--spacing-xs) var(--spacing-md);
             border-radius: var(--radius-md);
-            background-color: rgba(0, 0, 0, 0.55);
-            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            background-color: rgba(255, 255, 255, 0.84);
+            color: var(--colour-grey-warm-1);
+            box-shadow: var(--shadow-md-warm);
+            backdrop-filter: blur(8px);
             font-size: 0.9rem;
+          }
+          .exit-house-dialog {
+            width: min(420px, calc(100vw - 32px));
+            padding: 0;
+            border: 1px solid var(--colour-grey-warm-5);
+            border-radius: var(--radius-xl);
+            background: var(--colour-grey-warm-6);
+            color: var(--colour-grey-warm-1);
+            box-shadow: var(--shadow-xl);
+            &::backdrop {
+              background: rgba(0, 0, 0, 0.55);
+              backdrop-filter: blur(4px);
+            }
+            .exit-house-content {
+              padding: var(--spacing-lg);
+              h2 {
+                margin: 0 0 var(--spacing-md);
+              }
+              p {
+                margin: 0 0 var(--spacing-lg);
+                line-height: 1.5;
+              }
+              .exit-house-actions {
+                display: flex;
+                justify-content: space-between;
+                gap: var(--spacing-sm);
+                button {
+                  flex: 1;
+                  padding: var(--spacing-sm) var(--spacing-md);
+                  border-radius: var(--radius-xl);
+                  border: 1px solid var(--colour-grey-warm-4);
+                  background: white;
+                  &.exit-house-confirm {
+                    color: white;
+                    background: var(--colour-crimson-2);
+                    border-color: var(--colour-crimson-2);
+                  }
+                  &:focus-visible {
+                    outline: 2px solid var(--colour-crimson-3);
+                    outline-offset: 2px;
+                  }
+                }
+              }
+            }
           }
         }
       }

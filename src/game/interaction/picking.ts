@@ -15,7 +15,7 @@ export function pickInteractable(
     -((event.clientY - rect.top) / rect.height) * 2 + 1
   );
   raycaster.setFromCamera(ndc, camera);
-  const hit = raycaster.intersectObjects(meshes, false)[0];
+  const hit = raycaster.intersectObjects(meshes, true)[0];
   const interactable = hit?.object.userData.interactable;
   return interactable instanceof Interactable ? interactable : null;
 }
