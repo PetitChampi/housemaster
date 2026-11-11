@@ -1,46 +1,44 @@
-// Tunables for the 3D house
-// Distances are in world units (one unit is roughly a metre)
+// Tunables for the 3D flat
+// Distances are in metres
 
 export const SCENE = {
   background: 0x1b1d23,
-  floorColour: 0x2a2d36,
-  gridColour: 0x3a3e4a,
-  floorSize: 40,
 };
 
 // Orthographic isometric camera
 export const CAMERA = {
-  offset: { x: 16, y: 18, z: 16 },
-  viewSize: 14,
+  offset: { x: 8, y: 12, z: 8 },
+  viewSize: 5.2,
   near: 0.1,
   far: 200,
   followLerp: 8,
 };
 
 export const PLAYER = {
-  radius: 0.6,
-  height: 1.2,
-  colour: 0x8ab4f8,
-  maxSpeed: 6,
-  acceleration: 60,
-  friction: 40,
+  radius: 0.23,
+  height: 0.9,
+  colour: 0x7189b8,
+  maxSpeed: 2.2,
+  acceleration: 18,
+  friction: 14,
   turnSpeed: 12,
 };
 
 export const WALL = {
-  thickness: 0.3,
-  height: 2.4,
-  colour: 0x3f4452,
-  doorway: 3,
+  thickness: 0.12,
+  height: 2.62,
+  fadedOpacity: 0.22,
+  fadeSpeed: 12,
 };
 
 export const FURNITURE = {
-  colour: 0x9aa0aa,
-  highlight: 0xf6c177,
+  highlight: 0xe59a3a,
+  highlightIntensity: 0.32,
+  highlightSpeed: 12,
 };
 
 export const INTERACTION = {
-  reach: 2.4,
+  reach: 0.92,
 };
 
 export const SIM = {

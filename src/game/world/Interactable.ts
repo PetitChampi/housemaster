@@ -1,31 +1,60 @@
 import * as THREE from "three";
 import { FURNITURE } from "@/game/config/constants";
 import type { Vec2 } from "@/game/player/movement";
+import type { AABB } from "@/game/world/collision";
+
+interface MaterialState {
+  material: THREE.MeshStandardMaterial;
+  emissive: THREE.Color;
+  emissiveIntensity: number;
+}
 
 export class Interactable {
-  readonly object: THREE.Mesh;
   readonly position: Vec2;
+  readonly footprint: AABB;
+  private readonly materialStates: MaterialState[] = [];
+  private readonly highlightColour = new THREE.Color(FURNITURE.highlight);
+  private highlightTarget = 0;
+  private highlightAmount = 0;
 
-  // carries toolId for app callback, and title for the prompt
   constructor(
     readonly toolId: string,
     readonly title: string,
-    x: number,
-    z: number
+    readonly object: THREE.Group
   ) {
-    this.position = { x, y: z };
-    this.object = new THREE.Mesh(
-      new THREE.BoxGeometry(1.4, 1.2, 1.4),
-      new THREE.MeshStandardMaterial({ color: FURNITURE.colour })
-    );
-    this.object.position.set(x, 0.6, z);
-    // Let a raycast hit map straight back to this interactable
-    this.object.userData.interactable = this;
+    object.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) return;
+      child.userData.interactable = this;
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      const clones = materials.map((source) => source.clone());
+      child.material = Array.isArray(child.material) ? clones : clones[0];
+      materials.forEach((source) => source.dispose());
+      for (const cloned of clones) {
+        if (!(cloned instanceof THREE.MeshStandardMaterial)) continue;
+        this.materialStates.push({
+          material: cloned,
+          emissive: cloned.emissive.clone(),
+          emissiveIntensity: cloned.emissiveIntensity,
+        });
+      }
+    });
+
+    const bounds = new THREE.Box3().setFromObject(object);
+    this.footprint = { minX: bounds.min.x, maxX: bounds.max.x, minZ: bounds.min.z, maxZ: bounds.max.z };
+    this.position = { x: (bounds.min.x + bounds.max.x) / 2, y: (bounds.min.z + bounds.max.z) / 2 };
   }
 
-  // change the object's colour when it's the one in reach
   setHighlighted(highlighted: boolean) {
-    const material = this.object.material as THREE.MeshStandardMaterial;
-    material.color.setHex(highlighted ? FURNITURE.highlight : FURNITURE.colour);
+    this.highlightTarget = highlighted ? 1 : 0;
+  }
+
+  updateHighlight(dt: number) {
+    const amount = 1 - Math.exp(-FURNITURE.highlightSpeed * dt);
+    this.highlightAmount += (this.highlightTarget - this.highlightAmount) * amount;
+    for (const state of this.materialStates) {
+      state.material.emissive.copy(state.emissive).lerp(this.highlightColour, this.highlightAmount);
+      const intensity = Math.max(state.emissiveIntensity, FURNITURE.highlightIntensity);
+      state.material.emissiveIntensity = state.emissiveIntensity + (intensity - state.emissiveIntensity) * this.highlightAmount;
+    }
   }
 }

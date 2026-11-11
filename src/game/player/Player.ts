@@ -26,10 +26,14 @@ export class Player {
     body.position.y = PLAYER.radius + PLAYER.height / 2;
 
     const nose = new THREE.Mesh(
-      new THREE.BoxGeometry(0.2, 0.2, PLAYER.radius),
+      new THREE.BoxGeometry(0.09, 0.09, PLAYER.radius * 0.85),
       new THREE.MeshStandardMaterial({ color: 0xffffff })
     );
-    nose.position.set(0, PLAYER.radius + PLAYER.height / 2, PLAYER.radius);
+    nose.position.set(0, PLAYER.radius + PLAYER.height / 2, PLAYER.radius * 0.88);
+
+    body.castShadow = true;
+    body.receiveShadow = true;
+    nose.castShadow = true;
 
     this.object.add(body, nose);
     this.syncObject();
